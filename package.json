@@ -1,0 +1,23 @@
+{
+  "name": "cspn_sports",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/3100-CSPN-Project/3100_CSPN_Project#readme",
+  "bugs": {
+    "url": "https://github.com/3100-CSPN-Project/3100_CSPN_Project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3100-CSPN-Project/3100_CSPN_Project.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
