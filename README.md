@@ -1,6 +1,6 @@
 # 3100_CSPN_Project
 
-#am i Styles to follow:
+#Styles to follow:
 
 Prettier for formatting https://prettier.io/docs/configuration
 ESLint for code quality https://eslint.org/docs/latest/use/
