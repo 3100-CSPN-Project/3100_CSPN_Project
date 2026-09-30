@@ -5,14 +5,42 @@
 Prettier for formatting https://prettier.io/docs/configuration
 ESLint for code quality https://eslint.org/docs/latest/use/
 
-## Setup 
+## Setup
 
 Run npm install, then before pushing,
 npm run lint
 npm run format
 
-## For IDE setup:
-Install Prettier https://prettier.io/docs/install and ESLint https://eslint.org/docs/latest/use/getting-started
+## Supabase
 
+This repository uses React, Vite, and TypeScript. Run `npm run dev` to start
+the frontend. Create a local `.env` file, then set the Vite-prefixed Supabase
+project URL and publishable key from the shared Supabase Dashboard:
+
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
+
+Each contributor should create their own `.env` file. Do not commit it or
+share credentials in GitHub issues or pull requests.
+
+The typed Supabase client is in `src/lib/supabase.ts`. It is created lazily
+with `getSupabaseClient()`:
+
+```ts
+import { getSupabaseClient } from './lib/supabase.js';
+
+const supabase = getSupabaseClient();
+const { data, error } = await supabase.from('your_table').select('*');
+```
+
+Run `npm run typecheck` to verify the TypeScript connection layer. Do not put a
+Supabase secret/service-role key in client-facing code; add a separate
+server-only client if privileged operations are needed.
+
+## For IDE setup:
+
+Install Prettier https://prettier.io/docs/install and ESLint https://eslint.org/docs/latest/use/getting-started
 ## UI Prototype / Figma Link 
 https://www.figma.com/design/f7ZhdeWsFpY5vW2Xm0LFuE/CSPN-Prototype?node-id=0-1&t=IHOb7gwBKmcrmydc-1
