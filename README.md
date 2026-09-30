@@ -42,3 +42,5 @@ server-only client if privileged operations are needed.
 ## For IDE setup:
 
 Install Prettier https://prettier.io/docs/install and ESLint https://eslint.org/docs/latest/use/getting-started
+## UI Prototype / Figma Link 
+https://www.figma.com/design/f7ZhdeWsFpY5vW2Xm0LFuE/CSPN-Prototype?node-id=0-1&t=IHOb7gwBKmcrmydc-1
