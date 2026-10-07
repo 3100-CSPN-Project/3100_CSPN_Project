@@ -17,7 +17,29 @@ body {
 }
 
 .app-shell {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  place-items: center;
+}
+
+.app-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #243049;
+}
+
+.app-nav a {
+  color: #9fb4e0;
+  text-decoration: none;
+}
+
+.app-nav a.active {
+  color: #f4f7ff;
+  font-weight: 600;
+}
+
+.app-main {
+  padding: 1.5rem;
 }

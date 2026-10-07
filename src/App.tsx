@@ -1,45 +1,41 @@
-import { useEffect, useState } from 'react';
-import { getSupabaseClient } from './lib/supabase';
+import { Route, Routes } from 'react-router-dom';
+
+import Layout from './components/Layout';
+import GameListPage from './pages/GameListPage';
+import GamePage from './pages/GamePage';
+import HomePage from './pages/HomePage';
+import NotFoundPage from './pages/NotFoundPage';
+import PlayerListPage from './pages/PlayerListPage';
+import PlayerPage from './pages/PlayerPage';
+import ProfilePage from './pages/ProfilePage';
+import TeamListPage from './pages/TeamListPage';
+import TeamPage from './pages/TeamPage';
 
 export default function App() {
-  const [ready, setReady] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function checkSupabase() {
-      try {
-        const { error } = await getSupabaseClient()
-          .from('todos')
-          .select('id')
-          .limit(1);
-
-        if (!cancelled) {
-          setReady(!error);
-        }
-      } catch {
-        if (!cancelled) {
-          setReady(false);
-        }
-      }
-    }
-
-    void checkSupabase();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   return (
-    <main className="app-shell">
-      <h1>
-        {ready === null
-          ? 'Checking Supabase...'
-          : ready
-            ? 'Supabase ready'
-            : 'Supabase not ready'}
-      </h1>
-    </main>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<HomePage />} />
+
+        <Route path="player">
+          <Route index element={<PlayerListPage />} />
+          <Route path=":playerId" element={<PlayerPage />} />
+        </Route>
+
+        <Route path="team">
+          <Route index element={<TeamListPage />} />
+          <Route path=":teamId" element={<TeamPage />} />
+        </Route>
+
+        <Route path="game">
+          <Route index element={<GameListPage />} />
+          <Route path=":gameId" element={<GamePage />} />
+        </Route>
+
+        <Route path="profile" element={<ProfilePage />} />
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   );
 }
