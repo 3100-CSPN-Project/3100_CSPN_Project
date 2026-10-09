@@ -22,6 +22,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "ingest:mlb": "node scripts/mlb/import-2026.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
