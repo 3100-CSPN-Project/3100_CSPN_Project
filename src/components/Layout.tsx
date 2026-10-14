@@ -16,6 +16,7 @@ export default function Layout() {
     <div className="app-shell">
       {!isProfilePage && (
         <nav className="app-nav">
+          <img src={'/src/assets/logo.svg'}/>
           {navItems.map(({ to, label }) => (
             <NavLink key={to} to={to} end={to === '/'}>
               {label}
