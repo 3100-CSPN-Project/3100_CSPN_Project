@@ -1,47 +1,23 @@
-import { useEffect, useState } from 'react';
-
-import { getSupabaseClient } from '../lib/supabase';
-
-export default function HomePage() {
-  const [ready, setReady] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function checkSupabase() {
-      try {
-        const { error } = await getSupabaseClient()
-          .from('todos')
-          .select('id')
-          .limit(1);
-
-        if (!cancelled) {
-          setReady(!error);
-        }
-      } catch {
-        if (!cancelled) {
-          setReady(false);
-        }
-      }
-    }
-
-    void checkSupabase();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
+/** One league heading + a row of three empty game cards. */
+function GameRow({ league }: { league: string }) {
   return (
-    <section>
-      <h1>CSPN Sports</h1>
-      <p>
-        {ready === null
-          ? 'Checking Supabase...'
-          : ready
-            ? 'Supabase ready'
-            : 'Supabase not ready'}
-      </p>
+    <section className="league-row">
+      <h2>{league}</h2>
+      <div className="game-grid">
+        <div className="game-card" />
+        <div className="game-card" />
+        <div className="game-card" />
+      </div>
     </section>
+  );
+}
+export default function HomePage() {
+  return (
+    <div className="home-page">
+      <h1>Upcoming Games</h1>
+      <GameRow league="NFL" />
+      <GameRow league="MLB" />
+      <GameRow league="NBA" />
+    </div>
   );
 }

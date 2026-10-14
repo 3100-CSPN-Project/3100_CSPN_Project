@@ -1,7 +1,7 @@
 :root {
   font-family: system-ui, sans-serif;
   color: #111827;
-  background: #171b22;
+  background: #fff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -19,7 +19,7 @@ body,
 }
 
 body {
-  background: white;
+  background: #fff;
 }
 
 button {
@@ -30,6 +30,44 @@ button {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: #fff;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 1.1rem 2rem;
+  background: #fff;
+}
+
+.site-brand {
+  color: #e2001a;
+  font-size: 2.6rem;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.12em;
+  text-transform: uppercase;
+  transform: scaleY(1.08);
+}
+
+.site-leagues {
+  display: flex;
+  gap: 2rem;
+}
+
+.site-leagues span {
+  color: #1d1d1d;
+  font-size: 1.15rem;
+}
+
+.site-profile {
+  margin-left: auto;
+  background: #d9d9d9;
+  color: #1d1d1d;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  padding: 0.5rem 0.7rem;
 }
 
 .app-nav {
@@ -37,7 +75,7 @@ button {
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0 2rem 1rem;
   border-bottom: 2px solid black;
 }
 
@@ -52,19 +90,53 @@ button {
 }
 
 .app-main {
-  padding: 1.5rem;
+  padding: 1.5rem 2rem 2.5rem;
+  color: #111827;
+}
+
+.home-page h1 {
+  font-size: 2.4rem;
+  font-weight: 400;
+  margin: 0 0 1.25rem;
+}
+
+.league-row {
+  margin-bottom: 1.75rem;
+}
+
+.league-row h2 {
+  font-size: 1.9rem;
+  font-weight: 400;
+  margin: 0 0 0.6rem 0.75rem;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+.game-card {
+  min-height: 11rem;
+  background: #d9d9d9;
+}
+
+@media (max-width: 760px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .profile-main {
   padding: 0;
   min-height: calc(100vh - 0px);
-  background: #171b22;
+  background: #fff;
 }
 
 .profile-page {
   width: 100%;
   min-height: 100vh;
-  background: #171b22;
+  background: #fff;
 }
 
 .profile-shell {

@@ -9,24 +9,49 @@ const navItems = [
   { to: '/auth', label: 'Log in' }
 ];
 
+/** Red CSPN bar across the top of every page. */
+function Header() {
+  return (
+    <header className="site-header">
+      <div className="site-brand">CSPN</div>
+
+      <nav className="site-leagues">
+        <span>MLB</span>
+        <span>NBA</span>
+        <span>NFL</span>
+      </nav>
+
+      <div className="site-profile">
+        User profile/
+        <br />
+        settings
+      </div>
+    </header>
+  );
+}
+
 export default function Layout() {
-  const location = useLocation();
+  const { pathname } = useLocation();
+
+  // The prototype pages draw their own headers, so they skip ours.
   const isPrototypePage =
-  location.pathname === '/profile' ||
-  location.pathname.startsWith('/team/') ||
-  location.pathname.startsWith('/player/');
+    pathname === '/profile' ||
+    pathname.startsWith('/team/') ||
+    pathname.startsWith('/player/');
 
   return (
     <div className="app-shell">
       {!isPrototypePage && (
-        <nav className="app-nav">
-          <img src={'/src/assets/logo.svg'}/>
-          {navItems.map(({ to, label }) => (
-            <NavLink key={to} to={to} end={to === '/'}>
-              {label}
-            </NavLink>
-          ))}
-        </nav>
+        <>
+          <Header />
+          <nav className="app-nav">
+            {navItems.map(({ to, label }) => (
+              <NavLink key={to} to={to} end={to === '/'}>
+                {label}
+              </NavLink>
+            ))}
+          </nav>
+        </>
       )}
       <main className={`app-main${isPrototypePage ? ' profile-main' : ''}`}>
         <Outlet />

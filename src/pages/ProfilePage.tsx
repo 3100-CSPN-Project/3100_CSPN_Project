@@ -21,8 +21,12 @@ export default function ProfilePage() {
             <aside className="profile-sidebar">
               <div className="profile-avatar" aria-label="Profile avatar" />
               <div className="profile-name">drmelgoza</div>
-              <button type="button" className="profile-action">settings</button>
-              <button type="button" className="profile-action">log out</button>
+              <button type="button" className="profile-action">
+                settings
+              </button>
+              <button type="button" className="profile-action">
+                log out
+              </button>
             </aside>
 
             <div className="profile-panels">
@@ -30,7 +34,10 @@ export default function ProfilePage() {
                 <div className="profile-panel-header">My Teams</div>
                 <div className="profile-list">
                   {teams.map((team, index) => (
-                    <div key={`${team || 'team'}-${index}`} className="profile-list-item">
+                    <div
+                      key={`${team || 'team'}-${index}`}
+                      className="profile-list-item"
+                    >
                       {team || '\u00A0'}
                     </div>
                   ))}
@@ -41,7 +48,10 @@ export default function ProfilePage() {
                 <div className="profile-panel-header">My Players</div>
                 <div className="profile-list">
                   {players.map((player, index) => (
-                    <div key={`${player || 'player'}-${index}`} className="profile-list-item">
+                    <div
+                      key={`${player || 'player'}-${index}`}
+                      className="profile-list-item"
+                    >
                       {player || '\u00A0'}
                     </div>
                   ))}
