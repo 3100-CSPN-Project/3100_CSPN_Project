@@ -19,7 +19,7 @@ body,
 }
 
 body {
-  background: #171b22;
+  background: white;
 }
 
 button {
@@ -35,18 +35,19 @@ button {
 .app-nav {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 1rem;
   padding: 1rem;
-  border-bottom: 1px solid #243049;
+  border-bottom: 2px solid black;
 }
 
 .app-nav a {
-  color: #9fb4e0;
+  color: black;
   text-decoration: none;
 }
 
 .app-nav a.active {
-  color: #f4f7ff;
+  color: darkgrey;
   font-weight: 600;
 }
 
@@ -201,6 +202,69 @@ button {
   text-align: center;
   padding: 0.6rem 1rem;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.game-display {
+  flex: 1;
+  padding: 5%;
+  background-color: white;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  column-gap: 8%;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-text-box {
+  display: flex;
+  flex-direction: column;
+  width: 10em;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-menu-row {
+  display: flex;
+  flex-direction: row;
+  padding: 5%;
+  column-gap: 5%;
+}
+
+.game-menu-title {
+  padding-left: 20px;
+}
+
+.game-menu-item {
+  margin: 4%;
+  width: 90%;
+  height: 80%;
+}
+
+.game-play-tracker {
+  flex: 70%;
+  flex-direction: column;
+  background-color: #D9D9D9;
+  min-height: 50vh;
+}
+
+.game-chat {
+  flex: 30%;
+  flex-direction: column;
+  background-color: #D9D9D9;
+}
+
+.textBox {
+  background-color: #F1F1F1;
+  padding-left: 5%;
 }
 
 @media (max-width: 900px) {
