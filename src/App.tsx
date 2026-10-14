@@ -9,10 +9,12 @@ import PlayerPage from './pages/PlayerPage';
 import ProfilePage from './pages/ProfilePage';
 import TeamListPage from './pages/TeamListPage';
 import TeamPage from './pages/TeamPage';
+import AuthPage from './pages/AuthPage';
 
 export default function App() {
   return (
     <Routes>
+      <Route path="auth" element={<AuthPage />} />
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
 

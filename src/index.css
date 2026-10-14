@@ -252,18 +252,18 @@ button {
 .game-play-tracker {
   flex: 70%;
   flex-direction: column;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   min-height: 50vh;
 }
 
 .game-chat {
   flex: 30%;
   flex-direction: column;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
 }
 
 .textBox {
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   padding-left: 5%;
 }
 
@@ -280,5 +280,762 @@ button {
   .profile-panels {
     width: 100%;
     grid-template-columns: 1fr;
+  }
+
+  .prototype-main {
+    padding: 0;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Auth wireframe */
+  .auth-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    background: #e86367;
+  }
+  .auth-card {
+    width: min(33rem, 100%);
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+  }
+  .cspn-logo {
+    color: #e2001a;
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: -0.14em;
+    text-decoration: none;
+    font-size: 3.25rem;
+    line-height: 0.9;
+  }
+  .auth-logo {
+    align-self: center;
+    background: #fff;
+    padding: 0.1rem 0.45rem 0.15rem 0.1rem;
+    margin-bottom: 0.7rem;
+  }
+  .auth-field {
+    display: grid;
+    gap: 0.55rem;
+    margin-bottom: 2rem;
+    font-size: 1.45rem;
+  }
+  .auth-field input {
+    width: 100%;
+    height: 4.5rem;
+    border: 0;
+    background: #f5f5f5;
+    padding: 0.8rem 1.05rem;
+    font: inherit;
+    color: #171717;
+  }
+  .password-input {
+    position: relative;
+  }
+  .password-input input {
+    padding-right: 4rem;
+  }
+  .password-toggle {
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: #171717;
+    font-size: 1.9rem;
+    cursor: pointer;
+  }
+  .auth-submit {
+    align-self: center;
+    min-width: 11rem;
+    padding: 1rem 2rem;
+    border: 0;
+    background: #fff;
+    color: #171717;
+    font-size: 1.35rem;
+    cursor: pointer;
+  }
+
+  /* Team and player wireframes */
+  .sports-page {
+    min-height: 100vh;
+    background: #fff;
+    color: #1d1d1d;
+    padding: 2.1rem 3.5rem 3.5rem;
+  }
+  .sports-header {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    min-height: 4.5rem;
+  }
+  .league-links {
+    display: flex;
+    gap: 2.3rem;
+  }
+  .league-links a,
+  .player-tabs a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .user-settings {
+    margin-left: auto;
+    color: #1d1d1d;
+    background: #d8d8d8;
+    text-decoration: none;
+    padding: 0.38rem 0.55rem;
+    font-size: 0.77rem;
+    line-height: 1.08;
+  }
+  .team-page-content {
+    max-width: 66rem;
+    margin: 3rem auto 0;
+  }
+  .team-summary {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+  .team-logo-placeholder,
+  .player-icon {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    background: #d6d6d6;
+  }
+  .team-logo-placeholder {
+    width: 9rem;
+    height: 9rem;
+    font-size: 1.7rem;
+  }
+  .season-stats {
+    background: #d6d6d6;
+    padding: 1.3rem 0.4rem;
+    min-width: 29rem;
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  .season-stats span {
+    font-size: 1.55rem;
+  }
+  .team-columns {
+    display: grid;
+    grid-template-columns: 1fr 15rem;
+    gap: 2rem;
+    margin-top: 1.4rem;
+  }
+  .recent-games h1,
+  .team-players h2 {
+    margin: 0 0 0.8rem;
+    background: #d6d6d6;
+    padding: 0.25rem 0.55rem;
+    font-weight: 400;
+    font-size: 1.65rem;
+  }
+  .games-panel,
+  .team-player-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: #d6d6d6;
+    padding: 1rem;
+  }
+  .game-row,
+  .team-player-list a,
+  .team-player-list span {
+    min-height: 4.15rem;
+    background: #f5f5f5;
+    padding: 1.1rem;
+    color: #151515;
+    text-decoration: none;
+    font-size: 1.45rem;
+  }
+  .team-player-list a,
+  .team-player-list span {
+    min-height: 4.1rem;
+    font-size: 1.15rem;
+  }
+
+  .player-page {
+    padding-inline: 3rem;
+  }
+  .player-overview {
+    display: grid;
+    grid-template-columns: 8rem 1fr minmax(24rem, 1.15fr);
+    gap: 1.25rem;
+    align-items: end;
+    margin-top: 2rem;
+  }
+  .player-icon {
+    width: 8rem;
+    height: 8rem;
+    font-size: 1.1rem;
+  }
+  .player-identity h1 {
+    background: #d6d6d6;
+    margin: 0 0 0.45rem;
+    padding: 0.2rem 0.75rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+  .player-identity p {
+    background: #e8e8e8;
+    width: fit-content;
+    margin: 0.3rem 0;
+    padding: 0.13rem 0.7rem;
+    font-size: 0.85rem;
+  }
+  .player-identity button {
+    border: 0;
+    background: #aaa;
+    padding: 0.35rem 1.25rem;
+    color: #222;
+    cursor: pointer;
+  }
+  .headline-stats {
+    min-height: 8rem;
+    background: #d6d6d6;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    text-align: center;
+  }
+  .headline-stats span {
+    display: grid;
+    gap: 0.45rem;
+  }
+  .headline-stats strong {
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+  .headline-stats b {
+    font-size: 1.35rem;
+  }
+  .player-tabs {
+    display: flex;
+    gap: 2.4rem;
+    background: #d6d6d6;
+    padding: 0.85rem 1.1rem;
+    margin: 1.35rem 0;
+  }
+  .player-tabs .active {
+    text-decoration: underline;
+  }
+  .player-grid {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 1.35rem;
+  }
+  .player-left-column {
+    display: grid;
+    gap: 1.2rem;
+  }
+  .stats-card,
+  .trend-card,
+  .side-card {
+    background: #d6d6d6;
+    padding: 0.75rem 0.85rem;
+  }
+  .stats-card h2,
+  .trend-card h2,
+  .side-card h2 {
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin: 0 0 0.65rem;
+  }
+  .stats-table {
+    display: grid;
+    gap: 0.45rem;
+  }
+  .stats-table > div {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 0.7rem;
+    padding: 0.38rem 0.7rem;
+    background: #f5f5f5;
+    font-size: 0.85rem;
+  }
+  .stats-table .table-heading {
+    background: #bbb;
+    font-weight: 700;
+  }
+  .trend-card {
+    height: 12rem;
+  }
+  .trend-bars {
+    height: 7rem;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4rem 0.1rem 0;
+  }
+  .trend-bars span {
+    flex: 1;
+    max-width: 4rem;
+    background: #f5f5f5;
+  }
+  .player-side-column {
+    display: grid;
+    align-content: start;
+    gap: 1.2rem;
+  }
+  .side-card a,
+  .side-card p {
+    display: block;
+    background: #f5f5f5;
+    color: #222;
+    padding: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    margin: 0;
+  }
+  .side-list {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .side-list a {
+    text-align: left;
+  }
+  .related-news {
+    min-height: 7rem;
+  }
+
+  @media (max-width: 760px) {
+    .sports-page {
+      padding: 1.35rem;
+    }
+    .sports-header {
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .sports-header .cspn-logo {
+      font-size: 2.4rem;
+    }
+    .league-links {
+      gap: 1rem;
+    }
+    .user-settings {
+      margin-left: 0;
+    }
+    .team-page-content {
+      margin-top: 2rem;
+    }
+    .team-summary,
+    .team-columns,
+    .player-grid {
+      grid-template-columns: 1fr;
+    }
+    .season-stats {
+      min-width: 0;
+    }
+    .player-overview {
+      grid-template-columns: 1fr;
+    }
+    .headline-stats {
+      min-height: 5rem;
+    }
+    .player-tabs {
+      overflow-x: auto;
+      gap: 1.35rem;
+      white-space: nowrap;
+    }
+    .auth-field {
+      margin-bottom: 1.3rem;
+    }
+  }
+}
+
+.prototype-main {
+  padding: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Auth wireframe */
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: #e86367;
+}
+.auth-card {
+  width: min(33rem, 100%);
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+.cspn-logo {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.cspn-logo img {
+  display: block;
+  width: 10rem;
+  height: auto;
+}
+.auth-logo-image {
+  align-self: center;
+  width: 19rem;
+  height: auto;
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 0.7rem;
+}
+.auth-field {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 2rem;
+  font-size: 1.45rem;
+}
+.auth-field input {
+  width: 100%;
+  height: 4.5rem;
+  border: 0;
+  background: #f5f5f5;
+  padding: 0.8rem 1.05rem;
+  font: inherit;
+  color: #171717;
+}
+.password-input {
+  position: relative;
+}
+.password-input input {
+  padding-right: 4rem;
+}
+.password-toggle {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #171717;
+  font-size: 1.9rem;
+  cursor: pointer;
+}
+.auth-submit {
+  align-self: center;
+  min-width: 11rem;
+  padding: 1rem 2rem;
+  border: 0;
+  background: #fff;
+  color: #171717;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+/* Team and player wireframes */
+.sports-page {
+  min-height: 100vh;
+  background: #fff;
+  color: #1d1d1d;
+  padding: 2.1rem 3.5rem 3.5rem;
+}
+.sports-header {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  min-height: 4.5rem;
+}
+.league-links {
+  display: flex;
+  gap: 2.3rem;
+}
+.league-links a,
+.player-tabs a {
+  color: inherit;
+  text-decoration: none;
+}
+.user-settings {
+  margin-left: auto;
+  color: #1d1d1d;
+  background: #d8d8d8;
+  text-decoration: none;
+  padding: 0.38rem 0.55rem;
+  font-size: 0.77rem;
+  line-height: 1.08;
+}
+.team-page-content {
+  max-width: 66rem;
+  margin: 3rem auto 0;
+}
+.team-summary {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+.team-logo-placeholder,
+.player-icon {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: #d6d6d6;
+}
+.team-logo-placeholder {
+  width: 9rem;
+  height: 9rem;
+  font-size: 1.7rem;
+}
+.season-stats {
+  background: #d6d6d6;
+  padding: 1.3rem 0.4rem;
+  min-width: 29rem;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+.season-stats span {
+  font-size: 1.55rem;
+}
+.team-columns {
+  display: grid;
+  grid-template-columns: 1fr 15rem;
+  gap: 2rem;
+  margin-top: 1.4rem;
+}
+.recent-games h1,
+.team-players h2 {
+  margin: 0 0 0.8rem;
+  background: #d6d6d6;
+  padding: 0.25rem 0.55rem;
+  font-weight: 400;
+  font-size: 1.65rem;
+}
+.games-panel,
+.team-player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #d6d6d6;
+  padding: 1rem;
+}
+.game-row,
+.team-player-list a,
+.team-player-list span {
+  min-height: 4.15rem;
+  background: #f5f5f5;
+  padding: 1.1rem;
+  color: #151515;
+  text-decoration: none;
+  font-size: 1.45rem;
+}
+.team-player-list a,
+.team-player-list span {
+  min-height: 4.1rem;
+  font-size: 1.15rem;
+}
+
+.player-page {
+  padding-inline: 3rem;
+}
+.player-overview {
+  display: grid;
+  grid-template-columns: 8rem 1fr minmax(24rem, 1.15fr);
+  gap: 1.25rem;
+  align-items: end;
+  margin-top: 2rem;
+}
+.player-icon {
+  width: 8rem;
+  height: 8rem;
+  font-size: 1.1rem;
+}
+.player-identity h1 {
+  background: #d6d6d6;
+  margin: 0 0 0.45rem;
+  padding: 0.2rem 0.75rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.player-identity p {
+  background: #e8e8e8;
+  width: fit-content;
+  margin: 0.3rem 0;
+  padding: 0.13rem 0.7rem;
+  font-size: 0.85rem;
+}
+.player-identity button {
+  border: 0;
+  background: #aaa;
+  padding: 0.35rem 1.25rem;
+  color: #222;
+  cursor: pointer;
+}
+.headline-stats {
+  min-height: 8rem;
+  background: #d6d6d6;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  text-align: center;
+}
+.headline-stats span {
+  display: grid;
+  gap: 0.45rem;
+}
+.headline-stats strong {
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+.headline-stats b {
+  font-size: 1.35rem;
+}
+.player-tabs {
+  display: flex;
+  gap: 2.4rem;
+  background: #d6d6d6;
+  padding: 0.85rem 1.1rem;
+  margin: 1.35rem 0;
+}
+.player-tabs .active {
+  text-decoration: underline;
+}
+.player-grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 1.35rem;
+}
+.player-left-column {
+  display: grid;
+  gap: 1.2rem;
+}
+.stats-card,
+.trend-card,
+.side-card {
+  background: #d6d6d6;
+  padding: 0.75rem 0.85rem;
+}
+.stats-card h2,
+.trend-card h2,
+.side-card h2 {
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0 0 0.65rem;
+}
+.stats-table {
+  display: grid;
+  gap: 0.45rem;
+}
+.stats-table > div {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 0.7rem;
+  padding: 0.38rem 0.7rem;
+  background: #f5f5f5;
+  font-size: 0.85rem;
+}
+.stats-table .table-heading {
+  background: #bbb;
+  font-weight: 700;
+}
+.trend-card {
+  height: 12rem;
+}
+.trend-bars {
+  height: 7rem;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0.1rem 0;
+}
+.trend-bars span {
+  flex: 1;
+  max-width: 4rem;
+  background: #f5f5f5;
+}
+.player-side-column {
+  display: grid;
+  align-content: start;
+  gap: 1.2rem;
+}
+.side-card a,
+.side-card p {
+  display: block;
+  background: #f5f5f5;
+  color: #222;
+  padding: 0.9rem;
+  text-align: center;
+  text-decoration: none;
+  margin: 0;
+}
+.side-list {
+  display: grid;
+  gap: 0.4rem;
+}
+.side-list a {
+  text-align: left;
+}
+.related-news {
+  min-height: 7rem;
+}
+
+@media (max-width: 760px) {
+  .sports-page {
+    padding: 1.35rem;
+  }
+  .sports-header {
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .sports-header .cspn-logo {
+    font-size: 2.4rem;
+  }
+  .league-links {
+    gap: 1rem;
+  }
+  .user-settings {
+    margin-left: 0;
+  }
+  .team-page-content {
+    margin-top: 2rem;
+  }
+  .team-summary,
+  .team-columns,
+  .player-grid {
+    grid-template-columns: 1fr;
+  }
+  .season-stats {
+    min-width: 0;
+  }
+  .player-overview {
+    grid-template-columns: 1fr;
+  }
+  .headline-stats {
+    min-height: 5rem;
+  }
+  .player-tabs {
+    overflow-x: auto;
+    gap: 1.35rem;
+    white-space: nowrap;
+  }
+  .auth-field {
+    margin-bottom: 1.3rem;
   }
 }

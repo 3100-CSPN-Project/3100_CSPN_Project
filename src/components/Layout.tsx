@@ -6,15 +6,19 @@ const navItems = [
   { to: '/team', label: 'Teams' },
   { to: '/game', label: 'Games' },
   { to: '/profile', label: 'Profile' },
+  { to: '/auth', label: 'Log in' }
 ];
 
 export default function Layout() {
   const location = useLocation();
-  const isProfilePage = location.pathname === '/profile';
+  const isPrototypePage =
+  location.pathname === '/profile' ||
+  location.pathname.startsWith('/team/') ||
+  location.pathname.startsWith('/player/');
 
   return (
     <div className="app-shell">
-      {!isProfilePage && (
+      {!isPrototypePage && (
         <nav className="app-nav">
           <img src={'/src/assets/logo.svg'}/>
           {navItems.map(({ to, label }) => (
@@ -24,7 +28,7 @@ export default function Layout() {
           ))}
         </nav>
       )}
-      <main className={`app-main${isProfilePage ? ' profile-main' : ''}`}>
+      <main className={`app-main${isPrototypePage ? ' profile-main' : ''}`}>
         <Outlet />
       </main>
     </div>
