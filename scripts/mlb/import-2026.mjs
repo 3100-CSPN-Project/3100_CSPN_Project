@@ -739,18 +739,18 @@ async function main() {
     gamesProcessed = result.completed;
     failures = result.failures;
 
+    if (failures.length > 0) {
+      throw new Error(`${failures.length} finalized games failed to import.`);
+    }
+
     await updateIngestRun(client, runId, {
-      status: failures.length > 0 ? 'failed' : 'completed',
+      status: 'completed',
       finished_at: new Date().toISOString(),
       games_found: gamesFound,
       games_processed: gamesProcessed,
       games_skipped: gamesSkipped,
-      error_details: failures,
+      error_details: [],
     });
-
-    if (failures.length > 0) {
-      throw new Error(`${failures.length} finalized games failed to import.`);
-    }
 
     console.log(`MLB import complete: ${gamesProcessed} games processed.`);
   } catch (error) {

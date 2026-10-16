@@ -74,6 +74,41 @@ Use `--dry-run` to discover games without writing to Supabase. The importer is
 safe to rerun: games and stats are upserted by MLB IDs, requests retry on
 transient failures, and each run is recorded in `mlb_ingest_runs`.
 
+The JSON parsing functions remain in `scripts/mlb/import-2026.mjs`.
+`extractGames`/`gameRow` handle schedule responses (`dates[].games[]` or
+`games[]`), while `parseBoxscore` handles `teams.home` and `teams.away`,
+preserving batting, pitching, and fielding stats as JSON.
+Raw MLB objects are retained in the `source_json` columns so fields can be
+added later without losing the original response.
+
+The on-demand read layer is `src/lib/mlbStats.ts`. Each call reads finalized
+regular-season player-game rows from Supabase, then `scripts/mlb/aggregator.mjs`
+adds counting stats and recalculates rates such as AVG, OBP, OPS, ERA, and WHIP
+in memory. No aggregate split rows are stored. Its default query is regular
+season, last 7 games:
+
+```ts
+import { getMlbPlayerStats } from './lib/mlbStats.js';
+
+const defaultStats = await getMlbPlayerStats();
+const seasonStats = await getMlbPlayerStats({ split: 'season' });
+```
+
+Hitter output includes at-bats, runs, hits, home runs, RBI, stolen bases,
+batting average, OBP, and OPS. Pitcher output includes wins, losses, ERA,
+games, games started, saves, innings pitched, strikeouts, and WHIP.
+
+Run the parser/aggregation tests with:
+
+```bash
+npm run test:mlb
+```
+
+This parser covers MLB Stats API schedule and boxscore JSON. Statcast or
+pitch-level responses should use a separate parser and tables because they
+have a different grain: one row per pitch rather than one row per game or
+player-game.
+
 ## For IDE setup:
 
 Install Prettier https://prettier.io/docs/install and ESLint https://eslint.org/docs/latest/use/getting-started
