@@ -1,8 +1,8 @@
 /** One league heading + a row of three empty game cards. */
-function GameRow({ league }: { league: string }) {
+function GameRow({ gameType }: { gameType: string }) {
   return (
     <section className="league-row">
-      <h2>{league}</h2>
+      <h2>{gameType} Games</h2>
       <div className="game-grid">
         <div className="game-card" />
         <div className="game-card" />
@@ -14,10 +14,10 @@ function GameRow({ league }: { league: string }) {
 export default function HomePage() {
   return (
     <div className="home-page">
-      <h1>Upcoming Games</h1>
-      <GameRow league="NFL" />
-      <GameRow league="MLB" />
-      <GameRow league="NBA" />
+      <h1>MLB Games</h1>
+      <GameRow gameType="Live" />
+      <GameRow gameType="Upcoming" />
+      <GameRow gameType="Previous" />
     </div>
   );
 }
