@@ -26,6 +26,11 @@ button {
   font: inherit;
 }
 
+a:-webkit-any-link {
+  color: black;
+  text-decoration: none;
+}
+
 .app-shell {
   display: flex;
   flex-direction: column;
@@ -36,9 +41,11 @@ button {
 .site-header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2.5rem;
   padding: 1.1rem 2rem;
   background: #fff;
+  border-bottom: 2px solid black;
 }
 
 .site-brand {
@@ -65,18 +72,15 @@ button {
   margin-left: auto;
   background: #d9d9d9;
   color: #1d1d1d;
-  font-size: 0.8rem;
   line-height: 1.25;
   padding: 0.5rem 0.7rem;
 }
 
 .app-nav {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  padding: 0 2rem 1rem;
-  border-bottom: 2px solid black;
+  padding: 1rem 1rem 1rem;
 }
 
 .app-nav a {
@@ -85,8 +89,9 @@ button {
 }
 
 .app-nav a.active {
-  color: darkgrey;
-  font-weight: 600;
+  color: #e2001a;
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 .app-main {
