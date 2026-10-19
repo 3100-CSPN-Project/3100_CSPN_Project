@@ -10,21 +10,25 @@ const navItems = [
 ];
 
 /** Red CSPN bar across the top of every page. */
+//App Header and App Nav are part of the same component
 function Header() {
+  //change site-leagues to layout-nav-bar
   return (
     <header className="site-header">
-      <div className="site-brand">CSPN</div>
+      <img src={'/src/assets/logo.svg'} alt={"CSPN Site Logo"}/>
 
-      <nav className="site-leagues">
-        <span>MLB</span>
-        <span>NBA</span>
-        <span>NFL</span>
+      <nav className="app-nav">
+        {navItems.map(({ to, label }) => (
+          <NavLink key={to} to={to} end={to === '/'}>
+            {label}
+          </NavLink>
+        ))}
       </nav>
 
       <div className="site-profile">
-        User profile/
-        <br />
-        settings
+        <NavLink to={'/profile'}>
+          Profile
+        </NavLink>
       </div>
     </header>
   );
@@ -44,13 +48,6 @@ export default function Layout() {
       {!isPrototypePage && (
         <>
           <Header />
-          <nav className="app-nav">
-            {navItems.map(({ to, label }) => (
-              <NavLink key={to} to={to} end={to === '/'}>
-                {label}
-              </NavLink>
-            ))}
-          </nav>
         </>
       )}
       <main className={`app-main${isPrototypePage ? ' profile-main' : ''}`}>
