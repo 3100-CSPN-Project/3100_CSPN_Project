@@ -1116,3 +1116,26 @@ a:-webkit-any-link {
     margin-bottom: 1.3rem;
   }
 }
+
+.team-directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0 0;
+}
+
+.team-directory a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  background: #f2f2f2;
+  color: #1d1d1d;
+  text-decoration: none;
+}
+
+.team-directory img {
+  object-fit: contain;
+}

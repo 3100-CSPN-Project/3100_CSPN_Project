@@ -109,6 +109,53 @@ pitch-level responses should use a separate parser and tables because they
 have a different grain: one row per pitch rather than one row per game or
 player-game.
 
+## Team logos and player headshots
+
+Images are uploaded to Cloudinary once and the delivery URL is stored on the
+Supabase row, so the frontend shows images without any Cloudinary credentials.
+
+Apply `supabase/migrations/20261019000000_add_image_columns.sql` through the
+Supabase SQL editor or Supabase CLI before running the sync. It adds
+`logo_url`/`logo_public_id` to `mlb_teams` and `image_url`/`image_public_id` to
+`mlb_players`. Then add the server-only credentials to your local `.env`. The
+three Cloudinary values are on the Cloudinary dashboard:
+
+```env
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SECRET_KEY=your-server-only-secret-key
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
+
+`npm run sync:mlb-images` loads `.env` automatically, so no `export` is needed.
+Do not give these a `VITE_` prefix, because Vite inlines those into the browser
+bundle, and do not commit `.env`.
+
+Upload the team logos, then the much larger player set:
+
+```bash
+npm run sync:mlb-images -- --target teams
+npm run sync:mlb-images -- --target players
+```
+
+Use `--limit 1` first to check one image end to end before spending Cloudinary
+credits on the rest. The sync is safe to rerun: it only reads rows whose image
+column is still null, so it never re-uploads and resumes where it stopped. A
+missing source image stops the run, so rerun it to continue past the images
+that already succeeded. The source URLs are the `source` fields in the
+`TARGETS` object in `scripts/mlb/sync-images.mjs`, where `{id}` is the MLB ID.
+
+The read layer is `src/lib/mlbImages.ts`. `getMlbTeamLogos()` returns the
+stored URLs, and `transformedImageUrl(url, width)` inserts `f_auto,q_auto,w_*`
+so Cloudinary optimizes and resizes on delivery:
+
+```tsx
+<img src={transformedImageUrl(team.logoUrl, 128)} alt="" />
+```
+
+`src/pages/TeamListPage.tsx` uses both.
+
 ## For IDE setup:
 
 Install Prettier https://prettier.io/docs/install and ESLint https://eslint.org/docs/latest/use/getting-started
