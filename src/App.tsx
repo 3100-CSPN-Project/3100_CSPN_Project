@@ -14,9 +14,10 @@ import AuthPage from './pages/AuthPage';
 export default function App() {
   return (
     <Routes>
-      <Route path="auth" element={<AuthPage />} />
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
+        {/* trace: Keep authentication inside Layout so it also receives the shared header. */}
+        <Route path="auth" element={<AuthPage />} />
 
         <Route path="player">
           <Route index element={<PlayerListPage />} />

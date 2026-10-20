@@ -1,27 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
-import logo from '../assets/logo.svg';
 
 export default function PlayerPage() {
   const { playerId } = useParams();
 
   return (
     <section className="sports-page player-page">
-      <header className="sports-header">
-        <Link className="cspn-logo" to="/">
-          <img src={logo} alt="ESPN" />
-        </Link>
-        <nav className="league-links" aria-label="League navigation">
-          <a href="#mlb">MLB</a>
-          <a href="#nfl">NFL</a>
-          <a href="#nba">NBA</a>
-        </nav>
-        <Link className="user-settings" to="/profile">
-          User profile/
-          <br />
-          settings
-        </Link>
-      </header>
-
+      {/* trace: The shared Layout header replaces this page's former local header. */}
       <div className="player-overview">
         <div className="player-icon">
           Player

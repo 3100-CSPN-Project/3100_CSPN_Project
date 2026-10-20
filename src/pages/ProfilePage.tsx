@@ -8,15 +8,7 @@ export default function ProfilePage() {
         <header className="profile-header">Profile Page</header>
 
         <div className="profile-inner-shell">
-          <nav className="profile-quick-nav" aria-label="League navigation">
-            <div className="profile-brand">CSPN</div>
-            <div className="profile-leagues">
-              <span>MLB</span>
-              <span>NBA</span>
-              <span>NFL</span>
-            </div>
-          </nav>
-
+          {/* trace: Site navigation now comes from Layout's shared header. */}
           <div className="profile-content">
             <aside className="profile-sidebar">
               <div className="profile-avatar" aria-label="Profile avatar" />

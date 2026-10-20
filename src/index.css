@@ -39,13 +39,27 @@ a:-webkit-any-link {
 }
 
 .site-header {
+  /* trace: Keep the logo left and navigation at the opposite end of the shared header. */
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 2.5rem;
-  padding: 1.1rem 2rem;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0.75rem 2rem;
   background: #fff;
   border-bottom: 2px solid black;
+}
+
+.site-logo {
+  /* trace: Size and align the linked logo independently from the nav links. */
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.site-logo img {
+  display: block;
+  width: 7rem;
+  height: auto;
 }
 
 .site-brand {
@@ -77,10 +91,13 @@ a:-webkit-any-link {
 }
 
 .app-nav {
+  /* trace: Align navigation links to the right and allow wrapping when needed. */
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1rem 1rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0.75rem 0;
 }
 
 .app-nav a {
@@ -92,6 +109,21 @@ a:-webkit-any-link {
   color: #e2001a;
   font-weight: 700;
   text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  /* trace: Stack the shared header on narrow screens so its links remain usable. */
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .app-nav {
+    justify-content: flex-start;
+    gap: 1rem;
+  }
 }
 
 .app-main {
