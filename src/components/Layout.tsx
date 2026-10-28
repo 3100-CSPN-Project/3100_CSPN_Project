@@ -4,7 +4,8 @@ import logo from '../assets/logo.svg';
 
 // trace: Keep the shared header destinations in one place for every route.
 const navItems = [
-  { to: '/game', label: 'Games' },
+  // trace: Make the Games tab return to the homepage, like the logo.
+  { to: '/', label: 'Games' },
   { to: '/player', label: 'Players' },
   { to: '/team', label: 'Teams' },
   { to: '/profile', label: 'Profile' }

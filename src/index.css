@@ -1172,56 +1172,56 @@ a:-webkit-any-link {
   object-fit: contain;
 }
 
-.player-directory {
-  max-width: 52rem;
-}
-
-.player-directory > label {
-  display: block;
-  margin: 1.25rem 0 0.35rem;
-  font-weight: 600;
-}
-
-.player-directory > input {
-  width: min(100%, 28rem);
-  padding: 0.65rem 0.75rem;
-  border: 1px solid #9a9a9a;
-  font: inherit;
-}
-
-.player-directory-list {
+/* dark layer over the page while settings are open */
+.settings-backdrop {
+  position: fixed;
+  inset: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
-  margin: 1.25rem 0 0;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.player-directory-list a {
-  display: block;
-  padding: 0.7rem 0.8rem;
-  background: #f2f2f2;
+/* white card in the middle */
+.settings-card {
+  width: min(26rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #fff;
   color: #1d1d1d;
 }
 
-.player-directory-list a:hover,
-.player-directory-list a:focus-visible {
-  outline: 2px solid #e2001a;
-  outline-offset: 1px;
+.settings-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 
-.player-page .player-icon img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.settings-field {
+  display: grid;
+  gap: 0.35rem;
 }
 
-.player-page .stats-table > div {
-  grid-template-columns: 1.6fr 1fr;
+.settings-field input {
+  height: 2.5rem;
+  border: 1px solid #c9c9c9;
+  padding: 0 0.6rem;
+  font: inherit;
 }
 
-.player-page .pitcher-headline-stats {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+/* cancel and save pushed to the bottom right */
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.settings-actions button {
+  padding: 0.45rem 1.1rem;
+  border: 0;
+  background: #d8d8d8;
+  color: #2d2d2d;
+  cursor: pointer;
 }
