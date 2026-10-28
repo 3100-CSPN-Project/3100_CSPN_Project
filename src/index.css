@@ -1172,6 +1172,60 @@ a:-webkit-any-link {
   object-fit: contain;
 }
 
+.player-directory {
+  max-width: 52rem;
+}
+
+.player-directory > label {
+  display: block;
+  margin: 1.25rem 0 0.35rem;
+  font-weight: 600;
+}
+
+.player-directory > input {
+  width: min(100%, 28rem);
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #9a9a9a;
+  font: inherit;
+}
+
+.player-directory-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0 0;
+}
+
+.player-directory-list a {
+  display: block;
+  padding: 0.7rem 0.8rem;
+  background: #f2f2f2;
+  color: #1d1d1d;
+}
+
+.player-directory-list a:hover,
+.player-directory-list a:focus-visible {
+  outline: 2px solid #e2001a;
+  outline-offset: 1px;
+}
+
+.player-page .player-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-page .stats-table > div {
+  grid-template-columns: 1.6fr 1fr;
+}
+
+.player-page .pitcher-headline-stats {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
 /* dark layer over the page while settings are open */
 .settings-backdrop {
   position: fixed;
