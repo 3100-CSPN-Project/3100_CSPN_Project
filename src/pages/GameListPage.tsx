@@ -11,7 +11,9 @@ export default function GameListPage() {
         <li>Recent plays</li>
         <li>An interactive chat column</li>
       </ul>
-      <Link to="/game/1">Example: Dodgers vs. Giants</Link>
+      <Link to="/game/849815">Example: Rays vs Guardians </Link>
+      <Link to="/game/849805">Example: Brewers v. Rays </Link>
+      <Link to="/game/823953">Example: Dodgers v. Giants </Link>
     </section>
   );
 }
