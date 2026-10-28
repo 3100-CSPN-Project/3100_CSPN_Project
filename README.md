@@ -74,6 +74,10 @@ Use `--dry-run` to discover games without writing to Supabase. The importer is
 safe to rerun: games and stats are upserted by MLB IDs, requests retry on
 transient failures, and each run is recorded in `mlb_ingest_runs`.
 
+Boxscore requests hydrate MLB person metadata. Rerun the backfill after an
+importer update if existing player rows have null first/last names or
+batting/throwing-hand fields.
+
 The JSON parsing functions remain in `scripts/mlb/import-2026.mjs`.
 `extractGames`/`gameRow` handle schedule responses (`dates[].games[]` or
 `games[]`), while `parseBoxscore` handles `teams.home` and `teams.away`,
@@ -155,6 +159,20 @@ so Cloudinary optimizes and resizes on delivery:
 ```
 
 `src/pages/TeamListPage.tsx` uses both.
+
+## Player name search and stats joins
+
+Apply `supabase/migrations/20261027000000_add_player_search.sql` after the MLB
+tables and image columns migrations. It keeps player names in `mlb_players`,
+builds a PostgreSQL `tsvector` inverted index over those names and IDs, and
+exposes `search_mlb_players(search_query, result_limit)` for ranked prefix
+search. Search results return `player_id`; the frontend uses that ID to read
+the matching player stats.
+
+The `mlb_player_game_stats_with_names` view is the direct name-to-game-stats
+query. It joins `mlb_players.player_id` to
+`mlb_game_player_stats.player_id`, so the player name is never copied into
+each stats row.
 
 ## For IDE setup:
 

@@ -252,22 +252,36 @@ function gameRow(game, season, now) {
   };
 }
 
+function personName(person) {
+  const fullName = String(person.fullName ?? '').trim();
+  const nameParts = fullName ? fullName.split(/\s+/) : [];
+  const firstName = person.firstName ?? nameParts[0] ?? null;
+  const lastName =
+    person.lastName ??
+    (nameParts.length > 1 ? nameParts.slice(1).join(' ') : null);
+
+  return { firstName, lastName };
+}
+
 function playerRow(player, now) {
   player = player ?? {};
   const person = player.person ?? {};
   const playerId = numberOrNull(person.id);
+  const name = personName(person);
+  const position = player.position ?? person.primaryPosition ?? {};
+  const batSide = player.batSide ?? person.batSide;
+  const pitchHand = player.pitchHand ?? person.pitchHand;
 
   if (!playerId) return null;
 
   return {
     player_id: playerId,
     full_name: person.fullName ?? `Player ${playerId}`,
-    first_name: person.firstName ?? null,
-    last_name: person.lastName ?? null,
-    primary_position:
-      player.position?.abbreviation ?? player.position?.name ?? null,
-    bat_side: player.batSide?.code ?? null,
-    throw_hand: player.pitchHand?.code ?? null,
+    first_name: name.firstName,
+    last_name: name.lastName,
+    primary_position: position.abbreviation ?? position.name ?? null,
+    bat_side: batSide?.code ?? null,
+    throw_hand: pitchHand?.code ?? null,
     source_json: person,
     updated_at: now,
   };
@@ -518,7 +532,9 @@ async function importBoxscore(client, game, batchSize) {
 
   if (!gamePk) throw new Error('Cannot import a game without gamePk.');
 
-  const boxscore = await fetchMlb(`/game/${gamePk}/boxscore`);
+  const boxscore = await fetchMlb(`/game/${gamePk}/boxscore`, {
+    hydrate: 'person',
+  });
   const parsed = parseBoxscore(boxscore, gamePk, now);
 
   await upsertRows(
