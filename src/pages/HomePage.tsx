@@ -1,27 +1,15 @@
-/** One league heading + a row of three empty game cards. */
+/**The Home Page of CSPN, displaying live, upcoming, and previous MLB games
+ * in three separate rows. Game cards are direct links to that game's respective
+ * part of the site.**/
 import { getSupabaseClient } from '../lib/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { PostgrestError, QueryData } from '@supabase/supabase-js';
-import React, { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import GameCard from '../components/GameCard';
-import { Link } from 'react-router-dom';
-import { WritableStreamDefaultWriter } from 'node:stream/web';
 
-function GameRow({ gameType }: { gameType: string }) {
-  return (
-    <section className="league-row">
-      <h2>{gameType} Games</h2>
-      <div className="game-grid">
-        <div className="game-card" />
-        <div className="game-card" />
-        <div className="game-card" />
-      </div>
-    </section>
-  );
-}
-
-//TODO: Order by date.
 export default function HomePage() {
+  //set Supabase client and queries. Use three separate queries to
+  //apply the three necessary filters separately.
   const client: SupabaseClient = getSupabaseClient();
   const upcomingGamesQuery = client
     .from('mlb_games')
@@ -29,6 +17,7 @@ export default function HomePage() {
       'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), away_team:mlb_teams!away_team_id(team_name)',
     )
     .eq('status_abstract', 'Preview')
+    .order('official_date', { ascending: false })
     .limit(3)
     .overrideTypes<
       Array<{
@@ -43,6 +32,7 @@ export default function HomePage() {
       'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), home_score, away_team:mlb_teams!away_team_id(team_name), away_score',
     )
     .eq('status_abstract', 'Final')
+    .order('official_date', { ascending: false })
     .limit(3)
     .overrideTypes<
       Array<{
@@ -57,6 +47,7 @@ export default function HomePage() {
       'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), home_score, away_team:mlb_teams!away_team_id(team_name), away_score, linescore',
     )
     .eq('status_abstract', 'In Progress')
+    .order('official_date', { ascending: false })
     .limit(3)
     .overrideTypes<
       Array<{
@@ -65,10 +56,12 @@ export default function HomePage() {
       }>
     >();
 
+  //identify the query data types
   type upcomingGamesData = QueryData<typeof upcomingGamesQuery>;
   type pastGamesData = QueryData<typeof pastGamesQuery>;
   type liveGamesData = QueryData<typeof liveGamesQuery>;
 
+  //set the state variables for game data and query errors.
   const [upcomingGames, setUpcomingGames] = useState<upcomingGamesData | null>(
     null,
   );
@@ -80,6 +73,10 @@ export default function HomePage() {
   const [pastError, setPastError] = useState<PostgrestError | null>(null);
   const [liveError, setLiveError] = useState<PostgrestError | null>(null);
 
+  //Set the useEffect function to reload after the first render.
+  //Three separate async functions are used here
+  //to independently fetch all 3 query results.
+  //All 3 functions have a catch case for when errors occur.
   useEffect(() => {
     async function getUpcomingGamesData() {
       const { data, error } = await upcomingGamesQuery;
@@ -118,69 +115,94 @@ export default function HomePage() {
     });
   }, []);
 
-  let upcomingGamesRender: React.JSX.Element[] | null = null;
-  let liveGamesRender: React.JSX.Element[] | null = null;
-  let pastGamesRender: React.JSX.Element[] | null = null;
+  //Set variables used to dynamically build
+  //The three sections of games.
 
-  //TODO: Fix list arrangement using CSS and HTML
+  let upcomingSection: JSX.Element | null = null;
+  let liveSection: JSX.Element | null = null;
+  let pastSection: JSX.Element | null = null;
+
+  //If the game data has been successfully returned, build the HTMl sections.
+  //The section will be empty if there is no data to use.
   if (upcomingGames) {
-    upcomingGamesRender = upcomingGames.map((game) => (
-      <GameCard
-        gameId={game.game_pk}
-        status={game.status_abstract}
-        home_team={game.home_team.team_name}
-        time={`${game.official_date}`}
-        away_team={game.away_team.team_name}
-      />
-    ));
-  }
-
-  if (liveGames) {
-    liveGamesRender = liveGames.map((game) => (
-      <GameCard
-        gameId={game.game_pk}
-        status={game.status_abstract}
-        home_team={game.home_team.team_name}
-        score={`${game.home_score} - ${game.away_score}`}
-        interval={`${game.linescore.inningState.toUpperCase()} ${game.linescore.currentInningOrdinal.toUpperCase()}`}
-        away_team={game.away_team.team_name}
-      />
-    ));
-  }
-
-  if (pastGames) {
-    pastGamesRender = pastGames.map((game) => (
-      <GameCard
-        gameId={game.game_pk}
-        status={game.status_abstract}
-        home_team={game.home_team.team_name}
-        score={`${game.home_score} - ${game.away_score}`}
-        away_team={game.away_team.team_name}
-      />
-    ));
-  }
-
-  if (upcomingGamesRender && liveGamesRender && pastGamesRender) {
-    return (
-      <div className="home-page">
-        <h1>MLB Games</h1>
-        <section className="league-row">
-          <h2>Live Games</h2>
-          <div className="game-grid">{liveGamesRender}</div>
-        </section>
+    if (upcomingGames.length > 0) {
+      const upcomingGamesRender: JSX.Element[] = upcomingGames.map((game) => (
+        <GameCard
+          gameId={game.game_pk}
+          status={game.status_abstract}
+          home_team={game.home_team.team_name}
+          time={`${game.official_date}`}
+          away_team={game.away_team.team_name}
+        />
+      ));
+      upcomingSection = (
         <section className="league-row">
           <h2>Upcoming Games</h2>
           <div className="game-grid">{upcomingGamesRender}</div>
         </section>
+      );
+    } else {
+      upcomingSection = <section></section>;
+    }
+  }
+
+  if (liveGames) {
+    if (liveGames.length > 0) {
+      const liveGamesRender: JSX.Element[] = liveGames.map((game) => (
+        <GameCard
+          gameId={game.game_pk}
+          status={game.status_abstract}
+          home_team={game.home_team.team_name}
+          score={`${game.home_score} - ${game.away_score}`}
+          interval={`${game.linescore.inningState.toUpperCase()} ${game.linescore.currentInningOrdinal.toUpperCase()}`}
+          away_team={game.away_team.team_name}
+        />
+      ));
+      liveSection = (
+        <section className="league-row">
+          <h2>Live Games</h2>
+          <div className="game-grid">{liveGamesRender}</div>
+        </section>
+      );
+    } else {
+      liveSection = <section></section>;
+    }
+  }
+
+  if (pastGames) {
+    if (pastGames.length > 0) {
+      const pastGamesRender: JSX.Element[] = pastGames.map((game) => (
+        <GameCard
+          gameId={game.game_pk}
+          status={game.status_abstract}
+          home_team={game.home_team.team_name}
+          score={`${game.home_score} - ${game.away_score}`}
+          away_team={game.away_team.team_name}
+        />
+      ));
+      pastSection = (
         <section className="league-row">
           <h2>Previous Games</h2>
           <div className="game-grid">{pastGamesRender}</div>
         </section>
+      );
+    } else {
+      pastSection = <section></section>;
+    }
+  }
+
+  if (upcomingGames && pastGames && liveGames) {
+    return (
+      <div className="home-page">
+        <h1>MLB Games</h1>
+        {liveSection}
+        {upcomingSection}
+        {pastSection}
       </div>
     );
   } else if (upcomingError || pastError || liveError) {
     return <p>There was an error...</p>;
   } else {
-    return <p>loading...</p>;
+    return <p>Loading...</p>;
   }
 }
