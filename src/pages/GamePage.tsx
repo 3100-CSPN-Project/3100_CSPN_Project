@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getSupabaseClient } from '../lib/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { PostgrestError, QueryData } from '@supabase/supabase-js';
@@ -24,7 +24,7 @@ export default function GamePage() {
   const gameDataQuery = client
     .from('mlb_games')
     .select(
-      'game_date, status_abstract, official_date, is_final, venue_name, home_team:mlb_teams!home_team_id(team_name), home_score, away_team:mlb_teams!away_team_id(team_name), away_score, linescore',
+      'game_date, status_abstract, official_date, is_final, venue_name, home_team_id, home_team:mlb_teams!home_team_id(team_name), home_score, away_team_id, away_team:mlb_teams!away_team_id(team_name), away_score, linescore',
     )
     .eq('game_pk', gameId)
     .single()
@@ -103,12 +103,14 @@ export default function GamePage() {
     return (
       <div className="game-display">
         <div className="game-info">
-          <img
-            src={`/src/assets/${currentGame.home_team.team_name}.png`}
-            alt={`${currentGame.home_team.team_name} logo`}
-            width={IMG_WIDTH}
-            height={IMG_HEIGHT}
-          />
+          <Link to={`/team/${currentGame.home_team_id}`}>
+            <img
+              src={`/src/assets/${currentGame.home_team.team_name}.png`}
+              alt={`${currentGame.home_team.team_name} logo`}
+              width={IMG_WIDTH}
+              height={IMG_HEIGHT}
+            />
+          </Link>
           <div className="game-text-box">
             <strong>
               <p>{score_status}</p>
@@ -116,12 +118,14 @@ export default function GamePage() {
               <p>{outs_status}</p>
             </strong>
           </div>
-          <img
-            src={`/src/assets/${currentGame.away_team.team_name}.png`}
-            alt={`${currentGame.away_team.team_name} logo`}
-            width={IMG_WIDTH}
-            height={IMG_HEIGHT}
-          />
+          <Link to={`/team/${currentGame.away_team_id}`}>
+            <img
+              src={`/src/assets/${currentGame.away_team.team_name}.png`}
+              alt={`${currentGame.away_team.team_name} logo`}
+              width={IMG_WIDTH}
+              height={IMG_HEIGHT}
+            />
+          </Link>
         </div>
         <div className="game-menu-row">
           <div className="game-play-tracker">
