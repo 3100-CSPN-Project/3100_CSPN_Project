@@ -6,67 +6,22 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { PostgrestError, QueryData } from '@supabase/supabase-js';
 import { JSX, useEffect, useState } from 'react';
 import GameCard from '../components/GameCard';
+import {
+  getUpcomingGamePreviews,
+  getPastGamePreviews,
+  getLiveGamePreviews,
+  LiveGamePreviews,
+  PastGamePreviews,
+  UpcomingGamePreviews,
+} from '../lib/mlbPreviews';
 
 export default function HomePage() {
-  //set Supabase client and queries. Use three separate queries to
-  //apply the three necessary filters separately.
-  const client: SupabaseClient = getSupabaseClient();
-  const upcomingGamesQuery = client
-    .from('mlb_games')
-    .select(
-      'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), away_team:mlb_teams!away_team_id(team_name)',
-    )
-    .eq('status_abstract', 'Preview')
-    .order('official_date', { ascending: false })
-    .limit(3)
-    .overrideTypes<
-      Array<{
-        home_team: { team_name: string };
-        away_team: { team_name: string };
-      }>
-    >();
-
-  const pastGamesQuery = client
-    .from('mlb_games')
-    .select(
-      'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), home_score, away_team:mlb_teams!away_team_id(team_name), away_score',
-    )
-    .eq('status_abstract', 'Final')
-    .order('official_date', { ascending: false })
-    .limit(3)
-    .overrideTypes<
-      Array<{
-        home_team: { team_name: string };
-        away_team: { team_name: string };
-      }>
-    >();
-
-  const liveGamesQuery = client
-    .from('mlb_games')
-    .select(
-      'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), home_score, away_team:mlb_teams!away_team_id(team_name), away_score, linescore',
-    )
-    .eq('status_abstract', 'In Progress')
-    .order('official_date', { ascending: false })
-    .limit(3)
-    .overrideTypes<
-      Array<{
-        home_team: { team_name: any };
-        away_team: { team_name: any };
-      }>
-    >();
-
-  //identify the query data types
-  type upcomingGamesData = QueryData<typeof upcomingGamesQuery>;
-  type pastGamesData = QueryData<typeof pastGamesQuery>;
-  type liveGamesData = QueryData<typeof liveGamesQuery>;
-
   //set the state variables for game data and query errors.
-  const [upcomingGames, setUpcomingGames] = useState<upcomingGamesData | null>(
-    null,
-  );
-  const [pastGames, setPastGames] = useState<pastGamesData | null>(null);
-  const [liveGames, setLiveGames] = useState<liveGamesData | null>(null);
+  const [upcomingGames, setUpcomingGames] =
+    useState<UpcomingGamePreviews | null>(null);
+  const [pastGames, setPastGames] = useState<PastGamePreviews | null>(null);
+  const [liveGames, setLiveGames] = useState<LiveGamePreviews | null>(null);
+
   const [upcomingError, setUpcomingError] = useState<PostgrestError | null>(
     null,
   );
@@ -79,7 +34,7 @@ export default function HomePage() {
   //All 3 functions have a catch case for when errors occur.
   useEffect(() => {
     async function getUpcomingGamesData() {
-      const { data, error } = await upcomingGamesQuery;
+      const { data, error } = await getUpcomingGamePreviews();
       if (error) {
         setUpcomingError(error);
       }
@@ -87,7 +42,7 @@ export default function HomePage() {
     }
 
     async function getPastGamesData() {
-      const { data, error } = await pastGamesQuery;
+      const { data, error } = await getPastGamePreviews();
       if (error) {
         setPastError(error);
       }
@@ -95,7 +50,7 @@ export default function HomePage() {
     }
 
     async function getLiveGamesData() {
-      const { data, error } = await liveGamesQuery;
+      const { data, error } = await getLiveGamePreviews();
       if (error) {
         setLiveError(error);
       }
@@ -122,7 +77,7 @@ export default function HomePage() {
   let liveSection: JSX.Element | null = null;
   let pastSection: JSX.Element | null = null;
 
-  //If the game data has been successfully returned, build the HTMl sections.
+  //If the game data has been successfully returned, build the HTML sections.
   //The section will be empty if there is no data to use.
   if (upcomingGames) {
     if (upcomingGames.length > 0) {
