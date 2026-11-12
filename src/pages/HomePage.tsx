@@ -15,6 +15,75 @@ import {
   UpcomingGamePreviews,
 } from '../lib/mlbPreviews';
 
+export function formatUpcomingGames(
+  upcomingGames: UpcomingGamePreviews,
+): JSX.Element {
+  if (upcomingGames.length > 0) {
+    const upcomingGamesRender: JSX.Element[] = upcomingGames.map((game) => (
+      <GameCard
+        gameId={game.game_pk}
+        status={game.status_abstract}
+        home_team={game.home_team.team_name}
+        time={`${game.official_date}`}
+        away_team={game.away_team.team_name}
+      />
+    ));
+    return (
+      <section className="league-row">
+        <h2>Upcoming Games</h2>
+        <div className="game-grid">{upcomingGamesRender}</div>
+      </section>
+    );
+  } else {
+    return <section></section>;
+  }
+}
+
+export function formatLiveGames(liveGames: LiveGamePreviews): JSX.Element {
+  if (liveGames.length > 0) {
+    const liveGamesRender: JSX.Element[] = liveGames.map((game) => (
+      <GameCard
+        gameId={game.game_pk}
+        status={game.status_abstract}
+        home_team={game.home_team.team_name}
+        score={`${game.home_score} - ${game.away_score}`}
+        interval={`${game.linescore.inningState.toUpperCase()} ${game.linescore.currentInningOrdinal.toUpperCase()}`}
+        away_team={game.away_team.team_name}
+      />
+    ));
+    return (
+      <section className="league-row">
+        <h2>Live Games</h2>
+        <div className="game-grid">{liveGamesRender}</div>
+      </section>
+    );
+  } else {
+    return <section></section>;
+  }
+}
+
+export function formatPastGames(pastGames: PastGamePreviews): JSX.Element {
+  if (pastGames.length > 0) {
+    const pastGamesRender: JSX.Element[] = pastGames.map((game) => (
+      <GameCard
+        gameId={game.game_pk}
+        status={game.status_abstract}
+        home_team={game.home_team.team_name}
+        score={`${game.home_score} - ${game.away_score}`}
+        away_team={game.away_team.team_name}
+      />
+    ));
+    return (
+      <section className="league-row">
+        <h2>Previous Games</h2>
+        <div className="game-grid">{pastGamesRender}</div>
+      </section>
+    );
+  } else {
+    return <section></section>;
+  }
+}
+
 export default function HomePage() {
   //set the state variables for game data and query errors.
   const [upcomingGames, setUpcomingGames] =
@@ -80,70 +149,15 @@ export default function HomePage() {
   //If the game data has been successfully returned, build the HTML sections.
   //The section will be empty if there is no data to use.
   if (upcomingGames) {
-    if (upcomingGames.length > 0) {
-      const upcomingGamesRender: JSX.Element[] = upcomingGames.map((game) => (
-        <GameCard
-          gameId={game.game_pk}
-          status={game.status_abstract}
-          home_team={game.home_team.team_name}
-          time={`${game.official_date}`}
-          away_team={game.away_team.team_name}
-        />
-      ));
-      upcomingSection = (
-        <section className="league-row">
-          <h2>Upcoming Games</h2>
-          <div className="game-grid">{upcomingGamesRender}</div>
-        </section>
-      );
-    } else {
-      upcomingSection = <section></section>;
-    }
+    upcomingSection = formatUpcomingGames(upcomingGames);
   }
 
   if (liveGames) {
-    if (liveGames.length > 0) {
-      const liveGamesRender: JSX.Element[] = liveGames.map((game) => (
-        <GameCard
-          gameId={game.game_pk}
-          status={game.status_abstract}
-          home_team={game.home_team.team_name}
-          score={`${game.home_score} - ${game.away_score}`}
-          interval={`${game.linescore.inningState.toUpperCase()} ${game.linescore.currentInningOrdinal.toUpperCase()}`}
-          away_team={game.away_team.team_name}
-        />
-      ));
-      liveSection = (
-        <section className="league-row">
-          <h2>Live Games</h2>
-          <div className="game-grid">{liveGamesRender}</div>
-        </section>
-      );
-    } else {
-      liveSection = <section></section>;
-    }
+    liveSection = formatLiveGames(liveGames);
   }
 
   if (pastGames) {
-    if (pastGames.length > 0) {
-      const pastGamesRender: JSX.Element[] = pastGames.map((game) => (
-        <GameCard
-          gameId={game.game_pk}
-          status={game.status_abstract}
-          home_team={game.home_team.team_name}
-          score={`${game.home_score} - ${game.away_score}`}
-          away_team={game.away_team.team_name}
-        />
-      ));
-      pastSection = (
-        <section className="league-row">
-          <h2>Previous Games</h2>
-          <div className="game-grid">{pastGamesRender}</div>
-        </section>
-      );
-    } else {
-      pastSection = <section></section>;
-    }
+    pastSection = formatPastGames(pastGames);
   }
 
   if (upcomingGames && pastGames && liveGames) {
