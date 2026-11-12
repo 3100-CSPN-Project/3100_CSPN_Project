@@ -1,10 +1,17 @@
-export default function ChatTextBox(props: any) {
+// shows one posted comment in the live chat column
+export default function ChatTextBox({
+  author,
+  body,
+}: {
+  author: string;
+  body: string;
+}) {
   return (
     <div className="textBox">
       <strong>
-        <p>Triple T</p>
+        <p>{author}</p>
       </strong>
-      <p>Lets go Giants</p>
+      <p>{body}</p>
     </div>
   );
 }

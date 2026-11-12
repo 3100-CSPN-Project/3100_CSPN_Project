@@ -19,7 +19,12 @@ export default function AuthPage() {
 
         <label className="auth-field">
           Username or Email:
-          <input name="username" defaultValue="johnsuperfan" autoComplete="username" required />
+          <input
+            name="username"
+            defaultValue="johnsuperfan"
+            autoComplete="username"
+            required
+          />
         </label>
 
         <label className="auth-field">
@@ -43,7 +48,9 @@ export default function AuthPage() {
           </span>
         </label>
 
-        <button className="auth-submit" type="submit">Login</button>
+        <button className="auth-submit" type="submit">
+          Login
+        </button>
       </form>
     </main>
   );

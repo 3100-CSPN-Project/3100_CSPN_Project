@@ -1,4 +1,4 @@
-import { useState } from 'react';
+ import { useState } from 'react';
 import SettingsOverlay from '../components/SettingsOverlay';
 
 const teams = ['SF Giants', '', ''];
