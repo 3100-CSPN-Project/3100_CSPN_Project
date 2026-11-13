@@ -26,6 +26,7 @@ type PlayerTab = (typeof PLAYER_TABS)[number]['id'];
 type GameLogLimit = '7' | '30' | 'all';
 
 interface MlbPlayerProfile extends MlbPlayer {
+  teamId: number | null;
   teamName: string | null;
 }
 
@@ -168,6 +169,7 @@ export default function PlayerPage() {
       if (!active) return;
       setPlayer({
         ...playerRow,
+        teamId: teamId ?? null,
         teamName: stats.gameLog[0]?.teamName ?? null,
       });
       setProfileStats(stats);
@@ -285,7 +287,15 @@ export default function PlayerPage() {
         <div className="player-identity">
           <h1>
             {player.fullName}{' '}
-            {player.teamName && <em>({player.teamName})</em>}
+            {player.teamName && (
+              <em>
+                ({player.teamId !== null ? (
+                  <Link to={`/team/${player.teamId}`}>{player.teamName}</Link>
+                ) : (
+                  player.teamName
+                )})
+              </em>
+            )}
           </h1>
           <p>{player.primaryPosition ?? 'Position unavailable'}</p>
           <p>
