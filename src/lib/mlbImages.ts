@@ -8,6 +8,8 @@ export interface MlbTeamLogo {
   teamId: number;
   name: string;
   logoUrl: string | null;
+  leagueId: number | null;
+  divisionId: number | null;
 }
 
 /**
@@ -44,7 +46,7 @@ export function transformedImageUrl(
 export async function getMlbTeamLogos(): Promise<MlbTeamLogo[]> {
   const { data, error } = await getSupabaseClient()
     .from('mlb_teams')
-    .select('team_id, name, logo_url')
+    .select('team_id, name, logo_url, league_id, division_id')
     .order('name');
 
   if (error) {
@@ -55,5 +57,7 @@ export async function getMlbTeamLogos(): Promise<MlbTeamLogo[]> {
     teamId: row.team_id as number,
     name: row.name as string,
     logoUrl: row.logo_url as string | null,
+    leagueId: row.league_id === null ? null : Number(row.league_id),
+    divisionId: row.division_id === null ? null : Number(row.division_id),
   }));
 }
