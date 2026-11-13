@@ -39,6 +39,14 @@ Run `npm run typecheck` to verify the TypeScript connection layer. Do not put a
 Supabase secret/service-role key in client-facing code; add a separate
 server-only client if privileged operations are needed.
 
+## Data-layer test timing
+
+Run `npm run test:data:compare` to compare the shared in-memory and Jest mock
+suites. The latest run took **1,991.17 ms** with PGlite and **23.32 ms** with
+Jest mocks (about **85× faster** for mocks). The timing includes PGlite startup,
+migrations, fixture resets, and contract tests; it excludes the TypeScript build
+and Jest startup.
+
 ## MLB 2026 importer
 
 The server-side importer loads 2026 regular-season games and postseason games

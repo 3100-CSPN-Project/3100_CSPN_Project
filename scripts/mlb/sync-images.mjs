@@ -1,9 +1,7 @@
 import { parseArgs } from 'node:util';
 import { createClient } from '@supabase/supabase-js';
 import { v2 as cloudinary } from 'cloudinary';
-
-// supabase returns at most 1000 rows per request
-const PAGE_SIZE = 1000;
+import { fetchPendingImageIds, saveUploadedImage } from './dataStore.mjs';
 
 // each target names its table, the columns to fill, and where the source image lives
 const TARGETS = {
@@ -37,39 +35,9 @@ function requireEnv(name) {
 }
 
 // reads every row that has no image yet, one page at a time
-async function fetchPendingIds(client, target) {
-  const { table, idColumn, urlColumn } = target;
-  const ids = [];
-  let data;
-  let from = 0;
-
-  do {
-    const page = await client
-      .from(table)
-      .select(idColumn)
-      .is(urlColumn, null)
-      .order(idColumn)
-      .range(from, from + PAGE_SIZE - 1);
-
-    if (page.error) {
-      throw new Error(`Could not read ${table}: ${page.error.message}`);
-    }
-
-    data = page.data;
-    from += PAGE_SIZE;
-
-    for (const row of data) {
-      ids.push(row[idColumn]);
-    }
-    // a short page means there is nothing left to read
-  } while (data.length === PAGE_SIZE);
-
-  return ids;
-}
-
 // uploads one image to cloudinary, then stores its delivery url on the row
 async function uploadOne(client, target, id) {
-  const { table, idColumn, urlColumn, publicIdColumn, folder, source } = target;
+  const { folder, source } = target;
 
   // cloudinary fetches the source url
   const upload = await cloudinary.uploader.upload(source.replace('{id}', id), {
@@ -78,15 +46,7 @@ async function uploadOne(client, target, id) {
     overwrite: false,
   });
 
-  const newValues = {};
-  newValues[urlColumn] = upload.secure_url;
-  newValues[publicIdColumn] = upload.public_id;
-
-  const { error } = await client.from(table).update(newValues).eq(idColumn, id);
-
-  if (error) {
-    throw new Error(error.message);
-  }
+  await saveUploadedImage(client, target, id, upload);
 }
 
 // uploads every image the chosen table is still missing
@@ -128,7 +88,7 @@ async function main() {
   );
 
   // rows that already have a url are never read, so reruns resume where they stopped
-  const pending = await fetchPendingIds(client, target);
+  const pending = await fetchPendingImageIds(client, target);
   const ids = pending.slice(0, limit);
 
   for (const id of ids) {

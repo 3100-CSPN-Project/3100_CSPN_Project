@@ -1,10 +1,7 @@
-import { getSupabaseClient, SupabaseEnv } from './supabase';
-import { SupabaseClient } from '@supabase/supabase-js';
-
-const supabase: SupabaseClient = getSupabaseClient();
+import { getSupabaseClient } from './supabase';
 
 export async function getUpcomingGamePreviews() {
-  return supabase
+  return getSupabaseClient()
     .from('mlb_games')
     .select(
       'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), away_team:mlb_teams!away_team_id(team_name)',
@@ -28,7 +25,7 @@ export async function getUpcomingGamePreviews() {
 }
 
 export async function getPastGamePreviews() {
-  return supabase
+  return getSupabaseClient()
     .from('mlb_games')
     .select(
       'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), home_score, away_team:mlb_teams!away_team_id(team_name), away_score',
@@ -54,7 +51,7 @@ export async function getPastGamePreviews() {
 }
 
 export async function getLiveGamePreviews() {
-  return supabase
+  return getSupabaseClient()
     .from('mlb_games')
     .select(
       'game_pk, status_abstract, official_date, home_team:mlb_teams!home_team_id(team_name), home_score, away_team:mlb_teams!away_team_id(team_name), away_score, linescore',

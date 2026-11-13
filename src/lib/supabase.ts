@@ -23,11 +23,11 @@ function firstNonEmpty(
 }
 
 function getViteEnv(): SupabaseEnv {
+  const viteEnv = import.meta.env;
   return {
-    VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
-    VITE_SUPABASE_PUBLISHABLE_KEY: import.meta.env
-      .VITE_SUPABASE_PUBLISHABLE_KEY,
-    VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
+    VITE_SUPABASE_URL: viteEnv?.VITE_SUPABASE_URL,
+    VITE_SUPABASE_PUBLISHABLE_KEY: viteEnv?.VITE_SUPABASE_PUBLISHABLE_KEY,
+    VITE_SUPABASE_ANON_KEY: viteEnv?.VITE_SUPABASE_ANON_KEY,
   };
 }
 

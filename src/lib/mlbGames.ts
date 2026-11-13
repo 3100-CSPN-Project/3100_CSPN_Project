@@ -1,7 +1,4 @@
-import { getSupabaseClient, SupabaseEnv } from './supabase';
-import { SupabaseClient } from '@supabase/supabase-js';
-
-const supabase: SupabaseClient = getSupabaseClient();
+import { getSupabaseClient } from './supabase';
 
 export interface MlbGameLinescoreTeam {
   runs?: number;
@@ -58,7 +55,7 @@ export interface MlbGameBoxScore {
 }
 
 export async function getMlbGame(gameId: string) {
-  return supabase
+  return getSupabaseClient()
     .from('mlb_games')
     .select(
       'game_date, status_abstract, official_date, is_final, venue_name, home_team_id, home_team:mlb_teams!home_team_id(team_name), home_score, away_team_id, away_team:mlb_teams!away_team_id(team_name), away_score, linescore',
@@ -89,12 +86,12 @@ export async function getMlbGameBoxScore(
 ): Promise<MlbGameBoxScore> {
   // trace: Fetch team and player rows concurrently; either query failure invalidates the box score.
   const [teamResult, playerResult] = await Promise.all([
-    supabase
+    getSupabaseClient()
       .from('mlb_game_team_stats')
       .select('team_id, side, batting_stats, pitching_stats, fielding_stats')
       .eq('game_pk', gameId)
       .overrideTypes<MlbGameTeamStats[]>(),
-    supabase
+    getSupabaseClient()
       .from('mlb_game_player_stats')
       .select(
         'player_id, team_id, side, jersey_number, position_abbreviation, batting_order, batting_stats, pitching_stats, fielding_stats, player:mlb_players!inner(full_name)',
@@ -172,7 +169,9 @@ export async function getMlbNextGameForTeam(
     .maybeSingle();
 
   if (error) {
-    throw new Error(`Could not read the next game for team ${teamId}: ${error.message}`);
+    throw new Error(
+      `Could not read the next game for team ${teamId}: ${error.message}`,
+    );
   }
 
   if (!data) return null;

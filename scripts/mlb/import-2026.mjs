@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { startIngestRun, updateIngestRun, upsertRows } from './dataStore.mjs';
 
 const DEFAULT_SEASON = 2026;
 const DEFAULT_CONCURRENCY = 4;
@@ -441,44 +442,6 @@ function createSupabaseClient() {
   return createClient(url, secretKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
-}
-
-async function upsertRows(client, table, rows, onConflict, batchSize) {
-  if (rows.length === 0) return;
-
-  for (let start = 0; start < rows.length; start += batchSize) {
-    const batch = rows.slice(start, start + batchSize);
-    const { error } = await client.from(table).upsert(batch, { onConflict });
-
-    if (error) {
-      throw new Error(`Supabase upsert failed for ${table}: ${error.message}`);
-    }
-  }
-}
-
-async function startIngestRun(client, season, mode) {
-  const { data, error } = await client
-    .from('mlb_ingest_runs')
-    .insert({ season, mode, status: 'running' })
-    .select('run_id')
-    .single();
-
-  if (error) {
-    throw new Error(`Unable to start ingest run: ${error.message}`);
-  }
-
-  return data.run_id;
-}
-
-async function updateIngestRun(client, runId, values) {
-  const { error } = await client
-    .from('mlb_ingest_runs')
-    .update(values)
-    .eq('run_id', runId);
-
-  if (error) {
-    throw new Error(`Unable to update ingest run ${runId}: ${error.message}`);
-  }
 }
 
 async function fetchRegularGames(season, startDate, endDate) {
