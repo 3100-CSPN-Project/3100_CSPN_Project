@@ -8,7 +8,7 @@ const navItems = [
   { to: '/', label: 'Games' },
   { to: '/player', label: 'Players' },
   { to: '/team', label: 'Teams' },
-  { to: '/profile', label: 'Profile' }
+  { to: '/profile', label: 'Profile' },
 ];
 
 function Header() {

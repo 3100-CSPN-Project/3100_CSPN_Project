@@ -2079,4 +2079,26 @@ a:-webkit-any-link {
   .team-record-summary {
     margin-left: 0;
   }
+/* name, message and post button stacked under the chat list*/
+.chat-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.5rem;
+}
+
+/* same grey as the comment boxes above it*/
+.chat-form input {
+  height: 2.2rem;
+  border: 1px solid #c9c9c9;
+  padding: 0 0.5rem;
+  font: inherit;
+}
+
+.chat-form button {
+  padding: 0.4rem;
+  border: 0;
+  background: #d8d8d8;
+  color: #2d2d2d;
+  cursor: pointer;
 }
