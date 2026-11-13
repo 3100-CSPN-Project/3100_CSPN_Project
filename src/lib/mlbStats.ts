@@ -8,6 +8,12 @@ const PLAYER_GAME_PAGE_SIZE = 1000;
 const PLAYER_GAME_SELECT =
   'game_pk, player_id, team_id, batting_stats, pitching_stats, ' +
   'fielding_stats, game:mlb_games!inner(season,official_date,game_type,is_final)';
+const PLAYER_PROFILE_GAME_SELECT =
+  'game_pk, player_id, team_id, batting_stats, pitching_stats, fielding_stats, ' +
+  'game:mlb_games!inner(season,official_date,game_type,is_final,' +
+  'home_team_id,away_team_id,home_score,away_score,' +
+  'home_team:mlb_teams!home_team_id(team_name),' +
+  'away_team:mlb_teams!away_team_id(team_name))';
 
 export const DEFAULT_MLB_STATS_QUERY = Object.freeze({
   gameType: 'R',
@@ -58,6 +64,41 @@ export interface MlbPlayerStatRow {
   calculated_at: string;
 }
 
+export interface MlbPlayerGameLogRow {
+  gamePk: number;
+  date: string;
+  teamId: number;
+  teamName: string | null;
+  opponent: string | null;
+  isHome: boolean;
+  homeScore: number | null;
+  awayScore: number | null;
+  battingStats: Record<string, unknown>;
+  pitchingStats: Record<string, unknown>;
+}
+
+export interface MlbPlayerProfileStats {
+  season: MlbPlayerStatRow | null;
+  splits: MlbPlayerStatRow[];
+  gameLog: MlbPlayerGameLogRow[];
+}
+
+interface RawPlayerGameRow {
+  game_pk: number;
+  team_id: number;
+  batting_stats: Record<string, unknown> | null;
+  pitching_stats: Record<string, unknown> | null;
+  game: {
+    official_date: string;
+    home_team_id: number | null;
+    away_team_id: number | null;
+    home_score: number | null;
+    away_score: number | null;
+    home_team: { team_name: string } | null;
+    away_team: { team_name: string } | null;
+  };
+}
+
 function resolveSplit(split: MlbStatsSplit | undefined) {
   if (!split || split === 'last7') return DEFAULT_MLB_STATS_QUERY;
   if (split === 'season') {
@@ -74,13 +115,19 @@ function resolveSplit(split: MlbStatsSplit | undefined) {
   return { gameType: 'R', splitType: 'month', splitValue: split.value };
 }
 
-async function fetchPlayerGameRows(season: number, playerId?: number) {
+async function fetchPlayerGameRows(
+  season: number,
+  playerId?: number,
+  includeProfileContext = false,
+) {
   const rows: unknown[] = [];
 
   for (let start = 0; ; start += PLAYER_GAME_PAGE_SIZE) {
     let query = getSupabaseClient()
       .from('mlb_game_player_stats')
-      .select(PLAYER_GAME_SELECT)
+      .select(
+        includeProfileContext ? PLAYER_PROFILE_GAME_SELECT : PLAYER_GAME_SELECT,
+      )
       .eq('game.season', season)
       .eq('game.game_type', 'R')
       .eq('game.is_final', true)
@@ -133,4 +180,73 @@ export async function getMlbPlayerStats({
     .sort(
       (first, second) => first.player_id - second.player_id,
     ) as MlbPlayerStatRow[];
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+function numericValue(value: unknown): number | null {
+  if (value === undefined || value === null || value === '') return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+/** Reads the season summary, supported splits, and dated game rows together. */
+export async function getMlbPlayerProfileStats(
+  playerId: number,
+  season = new Date().getUTCFullYear(),
+): Promise<MlbPlayerProfileStats> {
+  const sourceRows = (await fetchPlayerGameRows(
+    season,
+    playerId,
+    true,
+  )) as RawPlayerGameRow[];
+  const splitRows = buildPlayerStatSplitRows(sourceRows, season).filter(
+    (row) => row.player_id === playerId,
+  ) as MlbPlayerStatRow[];
+  const seasonStats =
+    splitRows.find((row) => row.split_type === 'season') ?? null;
+  const splits = splitRows.sort((first, second) => {
+    const splitOrder = (row: MlbPlayerStatRow) => {
+      if (row.split_type === 'season') return 0;
+      if (row.split_type === 'last_games' && row.split_value === '7') return 1;
+      if (row.split_type === 'last_games' && row.split_value === '14') return 2;
+      return 3;
+    };
+
+    return (
+      splitOrder(first) - splitOrder(second) ||
+      second.split_value.localeCompare(first.split_value)
+    );
+  });
+
+  const gameLog = sourceRows
+    .map((row) => {
+      const game = row.game;
+      const isHome = game.home_team_id === row.team_id;
+      const team = isHome ? game.home_team : game.away_team;
+      const opponent = isHome ? game.away_team : game.home_team;
+
+      return {
+        gamePk: Number(row.game_pk),
+        date: String(game.official_date).slice(0, 10),
+        teamId: Number(row.team_id),
+        teamName: team?.team_name ?? null,
+        opponent: opponent?.team_name ?? null,
+        isHome,
+        homeScore: numericValue(game.home_score),
+        awayScore: numericValue(game.away_score),
+        battingStats: asRecord(row.batting_stats),
+        pitchingStats: asRecord(row.pitching_stats),
+      };
+    })
+    .sort(
+      (first, second) =>
+        second.date.localeCompare(first.date) || second.gamePk - first.gamePk,
+    );
+
+  return { season: seasonStats, splits, gameLog };
 }

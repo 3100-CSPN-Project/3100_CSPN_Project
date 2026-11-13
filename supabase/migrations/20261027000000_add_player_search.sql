@@ -1,8 +1,14 @@
 -- Keep player names searchable without duplicating them into the stats table.
 -- The player_id foreign key remains the join key for every player-game stat.
+
+--Lets app search player names quickly, using each player's player_id to retrieve their stats, names stay in mlb_players, stats in mlb_player_stats
+--search_vector is search ready version of player's name and ID, tsvector designed for full-text search
 alter table public.mlb_players
   add column if not exists search_vector tsvector not null default ''::tsvector;
 
+--Joins player name fields and id into one string
+--converts string into PSTG searchable format
+--returns to upd row
 create or replace function public.refresh_mlb_player_search_vector()
 returns trigger
 language plpgsql
