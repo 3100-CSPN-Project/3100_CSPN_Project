@@ -6,6 +6,11 @@ import { PostgrestError, QueryData } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import PlayTextBox from '../components/PlayTextBox';
 import ChatTextBox from '../components/ChatTextBox';
+import {
+  getGameComments,
+  postGameComment,
+  type GameComment,
+} from '../lib/gameComments';
 const IMG_WIDTH: number = 200;
 const IMG_HEIGHT: number = 200;
 
@@ -35,6 +40,28 @@ export default function GamePage() {
         console.log(`Error occurred; ${err}`);
       });
     }, [gameId]);
+
+    // the chat has its own state so a new comment does not refetch the game
+    const [comments, setComments] = useState<GameComment[]>([]);
+
+    // also used after posting, so the new comment shows up straight away
+    async function loadComments() {
+      setComments(await getGameComments(gameId!));
+    }
+
+    useEffect(() => {
+      loadComments();
+    }, [gameId]);
+
+    // react gives the form data straight to the action
+    async function handlePost(form: FormData) {
+      await postGameComment(
+        gameId!,
+        String(form.get('author')),
+        String(form.get('body')),
+      );
+      await loadComments();
+    }
 
     //Display on the page an error, a loading screen, or the proper page
     //depending on the return value of the Supabase Query.
@@ -124,9 +151,31 @@ export default function GamePage() {
                 <h3>Live Chat</h3>
               </div>
               <div className="game-menu-item">
-                <ChatTextBox />
-                <ChatTextBox />
-                <ChatTextBox />
+                {comments.length === 0 && <p>No comments yet.</p>}
+                {comments.map((comment) => (
+                  <ChatTextBox
+                    key={comment.comment_id}
+                    author={comment.author}
+                    body={comment.body}
+                  />
+                ))}
+
+                {/* the form clears itself after posting because the inputs are uncontrolled */}
+                <form className="chat-form" action={handlePost}>
+                  <input
+                    name="author"
+                    placeholder="your name"
+                    maxLength={40}
+                    required
+                  />
+                  <input
+                    name="body"
+                    placeholder="say something"
+                    maxLength={500}
+                    required
+                  />
+                  <button type="submit">post</button>
+                </form>
               </div>
             </div>
           </div>
