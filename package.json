@@ -18,7 +18,10 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "npm run test:data",
+    "pretest:data": "node src/tests/data-layer/build-test-modules.mjs",
+    "test:data": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config jest.config.mjs",
+    "test:data:compare": "npm run test:data -- --verbose",
     "test:mlb": "node --test scripts/mlb/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -32,6 +35,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.16",
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
@@ -40,6 +44,7 @@
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.12.0",
+    "jest": "^30.5.2",
     "prettier": "^3.9.9",
     "typescript": "^7.0.2",
     "vite": "^8.3.1"

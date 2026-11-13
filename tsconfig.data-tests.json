@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": ".test-build",
+    "rootDir": ".",
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": [
+    "src/lib/**/*.ts",
+    "scripts/mlb/aggregator.mjs",
+    "scripts/mlb/aggregator.d.mts"
+  ],
+  "exclude": ["node_modules", "dist", ".test-build"]
+}
