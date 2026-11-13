@@ -1631,6 +1631,42 @@ a:-webkit-any-link {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.auth-message {
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 0.9rem;
+  color: #171717;
+  background: #fff;
+  line-height: 1.35;
+}
+
+.auth-message-error {
+  border-left: 0.35rem solid #8b0000;
+}
+
+.auth-message-status {
+  border-left: 0.35rem solid #126b36;
+}
+
+.auth-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.auth-switch {
+  align-self: center;
+  margin-top: 1.25rem;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-switch:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .player-data-table {
   width: 100%;
   border-collapse: collapse;
@@ -2371,6 +2407,8 @@ a:-webkit-any-link {
   .team-record-summary {
     margin-left: 0;
   }
+}
+
 /* name, message and post button stacked under the chat list*/
 .chat-form {
   display: flex;
