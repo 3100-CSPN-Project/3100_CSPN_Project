@@ -384,7 +384,8 @@ a:-webkit-any-link {
   padding-left: 5%;
 }
 
-.game-mock {
+/* Trace Macias requested the same data-backed design across all game pages. */
+.game-detail {
   --game-ink: #14213d;
   --game-muted: #657187;
   --game-accent: #d82c43;
@@ -394,7 +395,7 @@ a:-webkit-any-link {
   color: var(--game-ink);
 }
 
-.game-mock-scoreboard {
+.game-detail-scoreboard {
   overflow: hidden;
   padding: clamp(1.25rem, 3vw, 2.5rem);
   border-radius: 1.25rem;
@@ -405,8 +406,8 @@ a:-webkit-any-link {
   text-align: center;
 }
 
-.game-mock-kicker,
-.game-mock-overline {
+.game-detail-kicker,
+.game-detail-overline {
   color: #a7b5ca;
   font-size: 0.72rem;
   font-weight: 800;
@@ -414,9 +415,8 @@ a:-webkit-any-link {
   text-transform: uppercase;
 }
 
-.game-mock-kicker span {
+.game-detail-kicker span {
   display: inline-block;
-  margin-left: 0.55rem;
   padding: 0.25rem 0.5rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.12);
@@ -424,7 +424,7 @@ a:-webkit-any-link {
   letter-spacing: 0.08em;
 }
 
-.game-mock-matchup {
+.game-detail-matchup {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -433,7 +433,7 @@ a:-webkit-any-link {
   margin: 1.5rem auto;
 }
 
-.game-mock-team {
+.game-detail-team {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -444,18 +444,18 @@ a:-webkit-any-link {
   text-align: center;
 }
 
-.game-mock a.game-mock-team {
+.game-detail a.game-detail-team {
   color: #fff;
 }
 
-.game-mock-team img {
+.game-detail-team img {
   width: clamp(4.5rem, 12vw, 7rem);
   height: clamp(4.5rem, 12vw, 7rem);
   object-fit: contain;
 }
 
-.game-mock-team small,
-.game-mock-score small {
+.game-detail-team small,
+.game-detail-score small {
   color: #a7b5ca;
   font-size: 0.68rem;
   font-weight: 700;
@@ -463,7 +463,7 @@ a:-webkit-any-link {
   text-transform: uppercase;
 }
 
-.game-mock-score {
+.game-detail-score {
   display: grid;
   grid-template-columns: auto auto auto;
   justify-items: center;
@@ -474,13 +474,17 @@ a:-webkit-any-link {
   line-height: 1;
 }
 
-.game-mock-score-divider {
+.game-detail-score-divider {
   color: #71809a;
   font-size: 0.65em;
   font-weight: 500;
 }
 
-.game-mock-meta {
+.game-detail-upcoming {
+  grid-column: 1 / -1;
+}
+
+.game-detail-meta {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -489,7 +493,7 @@ a:-webkit-any-link {
   font-size: 0.88rem;
 }
 
-.game-mock-panel {
+.game-detail-panel {
   margin-top: 1.25rem;
   padding: clamp(1rem, 2.5vw, 1.6rem);
   border: 1px solid var(--game-border);
@@ -498,7 +502,7 @@ a:-webkit-any-link {
   box-shadow: 0 0.5rem 1.6rem rgba(20, 33, 61, 0.05);
 }
 
-.game-mock-panel-heading {
+.game-detail-panel-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -506,41 +510,41 @@ a:-webkit-any-link {
   margin-bottom: 1rem;
 }
 
-.game-mock-panel-heading h2 {
+.game-detail-panel-heading h2 {
   margin: 0.25rem 0 0;
   font-size: 1.35rem;
 }
 
-.game-mock-overline {
+.game-detail-overline {
   color: var(--game-accent);
   font-size: 0.65rem;
 }
 
-.game-mock-team-heading {
+.game-detail-team-heading {
   margin: 1.15rem 0 0.55rem;
   font-size: 0.95rem;
 }
 
-.game-mock-table-wrap {
+.game-detail-table-wrap {
   overflow-x: auto;
   width: 100%;
 }
 
-.game-mock-table {
+.game-detail-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
   white-space: nowrap;
 }
 
-.game-mock-table th,
-.game-mock-table td {
+.game-detail-table th,
+.game-detail-table td {
   padding: 0.7rem 0.75rem;
   border-bottom: 1px solid var(--game-border);
   text-align: right;
 }
 
-.game-mock-table thead th {
+.game-detail-table thead th {
   color: var(--game-muted);
   font-size: 0.7rem;
   font-weight: 800;
@@ -548,51 +552,51 @@ a:-webkit-any-link {
   text-transform: uppercase;
 }
 
-.game-mock-table th:first-child,
-.game-mock-table td:first-child {
+.game-detail-table th:first-child,
+.game-detail-table td:first-child {
   text-align: left;
 }
 
-.game-mock-table tbody th {
+.game-detail-table tbody th {
   font-weight: 700;
 }
 
 /* Trace Macias requested player names link to their cumulative profile pages. */
-.game-mock-player-link {
+.game-detail-player-link {
   color: inherit;
   text-decoration: none;
 }
 
-.game-mock-player-link:hover,
-.game-mock-player-link:focus-visible {
+.game-detail-player-link:hover,
+.game-detail-player-link:focus-visible {
   color: var(--game-accent);
   text-decoration: underline;
 }
 
-.game-mock-table tbody tr:last-child th,
-.game-mock-table tbody tr:last-child td {
+.game-detail-table tbody tr:last-child th,
+.game-detail-table tbody tr:last-child td {
   border-bottom: 0;
 }
 
-.game-mock-linescore {
+.game-detail-linescore {
   min-width: 35rem;
 }
 
-.game-mock-linescore th:first-child {
+.game-detail-linescore th:first-child {
   min-width: 10rem;
 }
 
-.game-mock-total {
+.game-detail-total {
   font-weight: 900;
 }
 
-.game-mock-empty,
-.game-mock-loading {
+.game-detail-empty,
+.game-detail-loading {
   color: var(--game-muted);
   font-size: 0.9rem;
 }
 
-.game-mock-error {
+.game-detail-error {
   padding: 0.8rem 1rem;
   border: 1px solid #f4c7cc;
   border-radius: 0.65rem;
@@ -600,45 +604,45 @@ a:-webkit-any-link {
   color: #9f1d2e;
 }
 
-.game-mock-pitching-grid {
+.game-detail-pitching-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
-.game-mock-chat .textBox {
+.game-detail-chat .textBox {
   margin: 0.5rem 0;
   padding: 0.5rem 0.9rem;
   border-radius: 0.5rem;
   background: #f4f6f9;
 }
 
-.game-mock-chat .textBox p {
+.game-detail-chat .textBox p {
   margin: 0.25rem 0;
 }
 
-.game-mock-chat-form {
+.game-detail-chat-form {
   display: flex;
   gap: 0.6rem;
   margin-top: 1rem;
 }
 
-.game-mock-chat-form input {
+.game-detail-chat-form input {
   min-width: 0;
   padding: 0.7rem 0.8rem;
   border: 1px solid var(--game-border);
   border-radius: 0.5rem;
 }
 
-.game-mock-chat-form input:first-child {
+.game-detail-chat-form input:first-child {
   flex: 0 1 11rem;
 }
 
-.game-mock-chat-form input:nth-child(2) {
+.game-detail-chat-form input:nth-child(2) {
   flex: 1;
 }
 
-.game-mock-chat-form button {
+.game-detail-chat-form button {
   padding: 0.65rem 1rem;
   border: 0;
   border-radius: 0.5rem;
@@ -649,25 +653,25 @@ a:-webkit-any-link {
 }
 
 @media (max-width: 700px) {
-  .game-mock-matchup {
+  .game-detail-matchup {
     gap: 0.6rem;
   }
 
-  .game-mock-team {
+  .game-detail-team {
     font-size: 0.9rem;
   }
 
-  .game-mock-pitching-grid {
+  .game-detail-pitching-grid {
     grid-template-columns: 1fr;
     gap: 0.25rem;
   }
 
-  .game-mock-chat-form {
+  .game-detail-chat-form {
     flex-direction: column;
   }
 
-  .game-mock-chat-form input:first-child,
-  .game-mock-chat-form input:nth-child(2) {
+  .game-detail-chat-form input:first-child,
+  .game-detail-chat-form input:nth-child(2) {
     flex: auto;
   }
 }

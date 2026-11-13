@@ -9,10 +9,11 @@ import {
 import type { GameComment } from '../lib/gameComments';
 import ChatTextBox from './ChatTextBox';
 
-interface GameBoxScoreMockupProps {
+interface GameBoxScoreProps {
   game: MlbGameData;
   gameId: string;
   comments: GameComment[];
+  commentsError: string | null;
   onPostComment: (form: FormData) => Promise<void>;
 }
 
@@ -74,11 +75,11 @@ function PlayerBattingTable({ players }: { players: MlbGamePlayerStats[] }) {
   const rows = battingPlayers(players);
 
   return (
-    <div className="game-mock-table-wrap">
+    <div className="game-detail-table-wrap">
       {rows.length === 0 ? (
-        <p className="game-mock-empty">No batting box score available.</p>
+        <p className="game-detail-empty">No batting box score available.</p>
       ) : (
-        <table className="game-mock-table">
+        <table className="game-detail-table">
           <thead>
             <tr>
               <th scope="col">Batter</th>
@@ -95,7 +96,7 @@ function PlayerBattingTable({ players }: { players: MlbGamePlayerStats[] }) {
               <tr key={player.player_id}>
                 <th scope="row">
                   <Link
-                    className="game-mock-player-link"
+                    className="game-detail-player-link"
                     to={`/player/${player.player_id}`}
                   >
                     {player.player.full_name}
@@ -118,11 +119,11 @@ function PlayerPitchingTable({ players }: { players: MlbGamePlayerStats[] }) {
   const rows = pitchingPlayers(players);
 
   return (
-    <div className="game-mock-table-wrap">
+    <div className="game-detail-table-wrap">
       {rows.length === 0 ? (
-        <p className="game-mock-empty">No pitching box score available.</p>
+        <p className="game-detail-empty">No pitching box score available.</p>
       ) : (
-        <table className="game-mock-table">
+        <table className="game-detail-table">
           <thead>
             <tr>
               <th scope="col">Pitcher</th>
@@ -138,7 +139,7 @@ function PlayerPitchingTable({ players }: { players: MlbGamePlayerStats[] }) {
               <tr key={player.player_id}>
                 <th scope="row">
                   <Link
-                    className="game-mock-player-link"
+                    className="game-detail-player-link"
                     to={`/player/${player.player_id}`}
                   >
                     {player.player.full_name}
@@ -156,17 +157,21 @@ function PlayerPitchingTable({ players }: { players: MlbGamePlayerStats[] }) {
   );
 }
 
-export default function GameBoxScoreMockup({
+export default function GameBoxScore({
   game,
   gameId,
   comments,
+  commentsError,
   onPostComment,
-}: GameBoxScoreMockupProps) {
+}: GameBoxScoreProps) {
   const [boxScore, setBoxScore] = useState<MlbGameBoxScore | null>(null);
   const [boxScoreError, setBoxScoreError] = useState<string | null>(null);
 
+  // trace: Reset and guard the async stats request when navigating between game routes.
   useEffect(() => {
     let active = true;
+    setBoxScore(null);
+    setBoxScoreError(null);
 
     getMlbGameBoxScore(gameId)
       .then((data) => {
@@ -189,18 +194,31 @@ export default function GameBoxScoreMockup({
   const homePlayers =
     boxScore?.players.filter((player) => player.side === 'home') ?? [];
   const innings = game.linescore.innings ?? [];
+  const isScheduled = game.status_abstract === 'Preview';
+  const hasBoxScore =
+    boxScore !== null &&
+    (boxScore.players.length > 0 || boxScore.teams.length > 0);
+  const statusText =
+    game.status_abstract === 'In Progress'
+      ? [
+          game.linescore.inningState,
+          game.linescore.currentInningOrdinal,
+        ]
+          .filter(Boolean)
+          .join(' ') || game.status_abstract
+      : game.status_abstract;
 
   return (
-    <div className="game-mock">
-      <section className="game-mock-scoreboard" aria-label="Game result">
-        <div className="game-mock-kicker">
+    <div className="game-detail">
+      <section className="game-detail-scoreboard" aria-label="Game result">
+        <div className="game-detail-kicker">
           {/* Trace Macias requested hiding the internal game ID from the scoreboard. */}
-          <span>{game.status_abstract}</span>
+          <span>{statusText}</span>
         </div>
-        <div className="game-mock-matchup">
+        <div className="game-detail-matchup">
           {/* Trace Macias requested team marks link to their cumulative team pages. */}
           <Link
-            className="game-mock-team"
+            className="game-detail-team"
             to={`/team/${game.away_team_id}`}
             aria-label={`${game.away_team.team_name} team page`}
           >
@@ -213,13 +231,19 @@ export default function GameBoxScoreMockup({
             <span>{game.away_team.team_name}</span>
             <small>Away</small>
           </Link>
-          <div className="game-mock-score">
-            <span>{game.away_score}</span>
-            <span className="game-mock-score-divider">-</span>
-            <span>{game.home_score}</span>
+          <div className="game-detail-score">
+            {isScheduled ? (
+              <span className="game-detail-upcoming">VS</span>
+            ) : (
+              <>
+                <span>{game.away_score}</span>
+                <span className="game-detail-score-divider">-</span>
+                <span>{game.home_score}</span>
+              </>
+            )}
           </div>
           <Link
-            className="game-mock-team"
+            className="game-detail-team"
             to={`/team/${game.home_team_id}`}
             aria-label={`${game.home_team.team_name} team page`}
           >
@@ -233,22 +257,22 @@ export default function GameBoxScoreMockup({
             <small>Home</small>
           </Link>
         </div>
-        <div className="game-mock-meta">
+        <div className="game-detail-meta">
           <span>{formatDate(game.official_date)}</span>
           {game.venue_name && <span>{game.venue_name}</span>}
         </div>
       </section>
 
-      <section className="game-mock-panel" aria-labelledby="line-score-title">
-        <div className="game-mock-panel-heading">
+      <section className="game-detail-panel" aria-labelledby="line-score-title">
+        <div className="game-detail-panel-heading">
           <div>
-            <span className="game-mock-overline">THE GAME</span>
+            <span className="game-detail-overline">THE GAME</span>
             <h2 id="line-score-title">Line score</h2>
           </div>
         </div>
         {innings.length > 0 ? (
-          <div className="game-mock-table-wrap">
-            <table className="game-mock-table game-mock-linescore">
+          <div className="game-detail-table-wrap">
+            <table className="game-detail-table game-detail-linescore">
               <thead>
                 <tr>
                   <th scope="col">Team</th>
@@ -283,7 +307,7 @@ export default function GameBoxScoreMockup({
                           {inning[side]?.runs ?? '-'}
                         </td>
                       ))}
-                      <td className="game-mock-total">
+                      <td className="game-detail-total">
                         {totals?.runs ?? game[`${side}_score`]}
                       </td>
                       <td>{totals?.hits ?? '-'}</td>
@@ -295,53 +319,63 @@ export default function GameBoxScoreMockup({
             </table>
           </div>
         ) : (
-          <p className="game-mock-empty">
-            Inning-by-inning scoring is not available for this game.
+          <p className="game-detail-empty">
+            {isScheduled
+              ? 'The game has not started yet.'
+              : 'Inning-by-inning scoring is not available for this game.'}
           </p>
         )}
       </section>
 
       {boxScoreError ? (
-        <p className="game-mock-error" role="alert">
+        <p className="game-detail-error" role="alert">
           {boxScoreError}
         </p>
       ) : !boxScore ? (
-        <p className="game-mock-loading">Loading player box score…</p>
+        <p className="game-detail-loading">Loading player box score…</p>
+      ) : !hasBoxScore ? (
+        <section className="game-detail-panel">
+          <p className="game-detail-empty">
+            {game.is_final
+              ? 'No player box score is available for this game.'
+              : 'Player box scores will appear after the game is final.'}
+          </p>
+        </section>
       ) : (
         <>
-          <section className="game-mock-panel">
-            <div className="game-mock-panel-heading">
+          <section className="game-detail-panel">
+            <div className="game-detail-panel-heading">
               <div>
-                <span className="game-mock-overline">BATTERS</span>
+                <span className="game-detail-overline">BATTERS</span>
                 <h2>Batting box score</h2>
               </div>
             </div>
-            <h3 className="game-mock-team-heading">
+            <h3 className="game-detail-team-heading">
               {game.away_team.team_name}
             </h3>
             <PlayerBattingTable players={awayPlayers} />
-            <h3 className="game-mock-team-heading">
+            <h3 className="game-detail-team-heading">
               {game.home_team.team_name}
             </h3>
             <PlayerBattingTable players={homePlayers} />
           </section>
 
-          <section className="game-mock-panel">
-            <div className="game-mock-panel-heading">
+          <section className="game-detail-panel">
+            <div className="game-detail-panel-heading">
               <div>
-                <span className="game-mock-overline">PITCHERS</span>
+                <span className="game-detail-overline">PITCHERS</span>
                 <h2>Pitching lines</h2>
               </div>
             </div>
-            <div className="game-mock-pitching-grid">
+            <div className="game-detail-pitching-grid">
               <div>
-                <h3 className="game-mock-team-heading">
+                <h3 className="game-detail-team-heading">
                   {game.away_team.team_name}
                 </h3>
                 <PlayerPitchingTable players={awayPlayers} />
               </div>
               <div>
-                <h3 className="game-mock-team-heading">
+                <h3 className="game-detail-team-heading">
                   {game.home_team.team_name}
                 </h3>
                 <PlayerPitchingTable players={homePlayers} />
@@ -351,15 +385,20 @@ export default function GameBoxScoreMockup({
         </>
       )}
 
-      <section className="game-mock-panel game-mock-chat">
-        <div className="game-mock-panel-heading">
+      <section className="game-detail-panel game-detail-chat">
+        <div className="game-detail-panel-heading">
           <div>
-            <span className="game-mock-overline">FAN DISCUSSION</span>
+            <span className="game-detail-overline">FAN DISCUSSION</span>
             <h2>Live chat</h2>
           </div>
         </div>
+        {commentsError && (
+          <p className="game-detail-error" role="alert">
+            Unable to load game comments: {commentsError}
+          </p>
+        )}
         {comments.length === 0 ? (
-          <p className="game-mock-empty">No comments yet.</p>
+          <p className="game-detail-empty">No comments yet.</p>
         ) : (
           comments.map((comment) => (
             <ChatTextBox
@@ -369,7 +408,7 @@ export default function GameBoxScoreMockup({
             />
           ))
         )}
-        <form className="game-mock-chat-form" action={onPostComment}>
+        <form className="game-detail-chat-form" action={onPostComment}>
           <input
             name="author"
             placeholder="Your name"

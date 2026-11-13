@@ -87,6 +87,7 @@ export async function getMlbGame(gameId: string) {
 export async function getMlbGameBoxScore(
   gameId: string,
 ): Promise<MlbGameBoxScore> {
+  // trace: Fetch team and player rows concurrently; either query failure invalidates the box score.
   const [teamResult, playerResult] = await Promise.all([
     supabase
       .from('mlb_game_team_stats')
