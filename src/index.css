@@ -384,6 +384,298 @@ a:-webkit-any-link {
   padding-left: 5%;
 }
 
+/* Trace Macias requested the same data-backed design across all game pages. */
+.game-detail {
+  --game-ink: #14213d;
+  --game-muted: #657187;
+  --game-accent: #d82c43;
+  --game-border: #e4e9f0;
+  max-width: 76rem;
+  margin: 0 auto;
+  color: var(--game-ink);
+}
+
+.game-detail-scoreboard {
+  overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(ellipse at 50% 0, rgba(42, 84, 146, 0.3), transparent 60%),
+    #101a2d;
+  color: #fff;
+  text-align: center;
+}
+
+.game-detail-kicker,
+.game-detail-overline {
+  color: #a7b5ca;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.game-detail-kicker span {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  letter-spacing: 0.08em;
+}
+
+.game-detail-matchup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1rem, 4vw, 3.5rem);
+  max-width: 46rem;
+  margin: 1.5rem auto;
+}
+
+.game-detail-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  color: #fff;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 800;
+  text-align: center;
+}
+
+.game-detail a.game-detail-team {
+  color: #fff;
+}
+
+.game-detail-team img {
+  width: clamp(4.5rem, 12vw, 7rem);
+  height: clamp(4.5rem, 12vw, 7rem);
+  object-fit: contain;
+}
+
+.game-detail-team small,
+.game-detail-score small {
+  color: #a7b5ca;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.game-detail-score {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-items: center;
+  gap: 0.45rem;
+  font-size: clamp(2.4rem, 7vw, 4.25rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.game-detail-score-divider {
+  color: #71809a;
+  font-size: 0.65em;
+  font-weight: 500;
+}
+
+.game-detail-upcoming {
+  grid-column: 1 / -1;
+}
+
+.game-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem 1.5rem;
+  color: #c1ccdc;
+  font-size: 0.88rem;
+}
+
+.game-detail-panel {
+  margin-top: 1.25rem;
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+  border: 1px solid var(--game-border);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 0.5rem 1.6rem rgba(20, 33, 61, 0.05);
+}
+
+.game-detail-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.game-detail-panel-heading h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.35rem;
+}
+
+.game-detail-overline {
+  color: var(--game-accent);
+  font-size: 0.65rem;
+}
+
+.game-detail-team-heading {
+  margin: 1.15rem 0 0.55rem;
+  font-size: 0.95rem;
+}
+
+.game-detail-table-wrap {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.game-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.game-detail-table th,
+.game-detail-table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--game-border);
+  text-align: right;
+}
+
+.game-detail-table thead th {
+  color: var(--game-muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.game-detail-table th:first-child,
+.game-detail-table td:first-child {
+  text-align: left;
+}
+
+.game-detail-table tbody th {
+  font-weight: 700;
+}
+
+/* Trace Macias requested player names link to their cumulative profile pages. */
+.game-detail-player-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.game-detail-player-link:hover,
+.game-detail-player-link:focus-visible {
+  color: var(--game-accent);
+  text-decoration: underline;
+}
+
+.game-detail-table tbody tr:last-child th,
+.game-detail-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.game-detail-linescore {
+  min-width: 35rem;
+}
+
+.game-detail-linescore th:first-child {
+  min-width: 10rem;
+}
+
+.game-detail-total {
+  font-weight: 900;
+}
+
+.game-detail-empty,
+.game-detail-loading {
+  color: var(--game-muted);
+  font-size: 0.9rem;
+}
+
+.game-detail-error {
+  padding: 0.8rem 1rem;
+  border: 1px solid #f4c7cc;
+  border-radius: 0.65rem;
+  background: #fff4f5;
+  color: #9f1d2e;
+}
+
+.game-detail-pitching-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.game-detail-chat .textBox {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.5rem;
+  background: #f4f6f9;
+}
+
+.game-detail-chat .textBox p {
+  margin: 0.25rem 0;
+}
+
+.game-detail-chat-form {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.game-detail-chat-form input {
+  min-width: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--game-border);
+  border-radius: 0.5rem;
+}
+
+.game-detail-chat-form input:first-child {
+  flex: 0 1 11rem;
+}
+
+.game-detail-chat-form input:nth-child(2) {
+  flex: 1;
+}
+
+.game-detail-chat-form button {
+  padding: 0.65rem 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--game-accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .game-detail-matchup {
+    gap: 0.6rem;
+  }
+
+  .game-detail-team {
+    font-size: 0.9rem;
+  }
+
+  .game-detail-pitching-grid {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .game-detail-chat-form {
+    flex-direction: column;
+  }
+
+  .game-detail-chat-form input:first-child,
+  .game-detail-chat-form input:nth-child(2) {
+    flex: auto;
+  }
+}
+
 @media (max-width: 900px) {
   .profile-content {
     flex-direction: column;
