@@ -11,8 +11,10 @@ import {
   postGameComment,
   type GameComment,
 } from '../lib/gameComments';
+import GameBoxScoreMockup from '../components/GameBoxScoreMockup';
 const IMG_WIDTH: number = 200;
 const IMG_HEIGHT: number = 200;
+const MOCKUP_GAME_ID = '849799';
 
 //Game Page: Display the DB data for a single game, including the score (if live or final),
 //the teams, and the time.
@@ -70,6 +72,17 @@ export default function GamePage() {
     } else if (!currentGame) {
       return <p>Loading...</p>;
     } else {
+      if (gameId === MOCKUP_GAME_ID) {
+        return (
+          <GameBoxScoreMockup
+            game={currentGame}
+            gameId={gameId}
+            comments={comments}
+            onPostComment={handlePost}
+          />
+        );
+      }
+
       //Calculate a score string only if the game has begun or passed.
 
       //Example:
@@ -90,7 +103,7 @@ export default function GamePage() {
       //Else -> 'FINAL'
       let game_status: string;
       if (currentGame.status_abstract === 'In Progress') {
-        game_status = `${currentGame.linescore.inningState.toUpperCase()} ${currentGame.linescore.currentInningOrdinal.toUpperCase()}`;
+        game_status = `${currentGame.linescore.inningState?.toUpperCase() ?? ''} ${currentGame.linescore.currentInningOrdinal?.toUpperCase() ?? ''}`.trim();
       } else if (currentGame.status_abstract === 'Preview') {
         game_status = `${currentGame.official_date}`;
       } else {
