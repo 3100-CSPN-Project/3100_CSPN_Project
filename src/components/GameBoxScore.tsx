@@ -99,7 +99,7 @@ function PlayerBattingTable({ players }: { players: MlbGamePlayerStats[] }) {
                 <th scope="row">
                   <Link
                     className="game-detail-player-link"
-                    to={`/player/${player.player_id}`}
+                    to={`/players/${player.player_id}`}
                   >
                     {player.player.full_name}
                   </Link>
@@ -142,7 +142,7 @@ function PlayerPitchingTable({ players }: { players: MlbGamePlayerStats[] }) {
                 <th scope="row">
                   <Link
                     className="game-detail-player-link"
-                    to={`/player/${player.player_id}`}
+                    to={`/players/${player.player_id}`}
                   >
                     {player.player.full_name}
                   </Link>
@@ -218,7 +218,7 @@ export default function GameBoxScore({
           {/* Trace Macias requested team marks link to their cumulative team pages. */}
           <Link
             className="game-detail-team"
-            to={`/team/${game.away_team_id}`}
+            to={`/teams/${game.away_team_id}`}
             aria-label={`${game.away_team.team_name} team page`}
           >
             <img
@@ -243,7 +243,7 @@ export default function GameBoxScore({
           </div>
           <Link
             className="game-detail-team"
-            to={`/team/${game.home_team_id}`}
+            to={`/teams/${game.home_team_id}`}
             aria-label={`${game.home_team.team_name} team page`}
           >
             <img

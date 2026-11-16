@@ -19,17 +19,17 @@ export default function App() {
         {/* trace: Keep authentication inside Layout so it also receives the shared header. */}
         <Route path="auth" element={<AuthPage />} />
 
-        <Route path="player">
+        <Route path="players">
           <Route index element={<PlayerListPage />} />
           <Route path=":playerId" element={<PlayerPage />} />
         </Route>
 
-        <Route path="team">
+        <Route path="teams">
           <Route index element={<TeamListPage />} />
           <Route path=":teamId" element={<TeamPage />} />
         </Route>
 
-        <Route path="game">
+        <Route path="games">
           <Route index element={<GameListPage />} />
           <Route path=":gameId" element={<GamePage />} />
         </Route>

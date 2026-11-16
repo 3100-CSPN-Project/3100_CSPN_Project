@@ -4,7 +4,7 @@ const IMG_SIZE: number = 100;
 export default function GameCard(props: any) {
   if (props.status === 'Preview') {
     return (
-      <Link to={`/game/${props.gameId}`} className={'game-card'}>
+      <Link to={`/games/${props.gameId}`} className={'game-card'}>
         <img
           src={`/src/assets/${props.home_team}.png`}
           alt={`${props.home_team} logo`}
@@ -20,7 +20,7 @@ export default function GameCard(props: any) {
     );
   } else if (props.status === 'In Progress') {
     return (
-      <Link to={`/game/${props.gameId}`} className={'game-card'}>
+      <Link to={`/games/${props.gameId}`} className={'game-card'}>
         <img
           src={`/src/assets/${props.home_team}.png`}
           alt={`${props.home_team} logo`}
@@ -37,7 +37,7 @@ export default function GameCard(props: any) {
     );
   } else {
     return (
-      <Link to={`/game/${props.gameId}`} className={'game-card'}>
+      <Link to={`/games/${props.gameId}`} className={'game-card'}>
         <img
           src={`/src/assets/${props.home_team}.png`}
           alt={`${props.home_team} logo`}

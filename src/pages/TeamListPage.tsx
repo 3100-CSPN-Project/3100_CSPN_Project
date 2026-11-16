@@ -36,7 +36,7 @@ function TeamCards({ teams }: { teams: MlbTeamLogo[] }) {
     <ul className="team-directory">
       {teams.map((team) => (
         <li key={team.teamId}>
-          <Link to={`/team/${team.teamId}`}>
+          <Link to={`/teams/${team.teamId}`}>
             {team.logoUrl !== null && (
               <img
                 src={transformedImageUrl(team.logoUrl, 128)}
