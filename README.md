@@ -1,6 +1,6 @@
 # 3100_CSPN_Project
 
-## Live app hosted at: 
+## Live app hosted at:
 
 https://red-coast-0e350f51e.3.azurestaticapps.net
 
