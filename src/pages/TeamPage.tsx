@@ -134,7 +134,7 @@ function LeaderGroup({
               {leader ? (
                 <>
                   <strong>{metric.format(leader.value)}</strong>
-                  <Link to={`/player/${leader.player.playerId}`}>
+                  <Link to={`/players/${leader.player.playerId}`}>
                     {leader.player.fullName}
                   </Link>
                 </>
@@ -164,7 +164,7 @@ function DepthChart({
           {players.map((player) => (
             <li key={player.playerId}>
               <span className="team-depth-position">{player.position}</span>
-              <Link to={`/player/${player.playerId}`}>{player.fullName}</Link>
+              <Link to={`/players/${player.playerId}`}>{player.fullName}</Link>
             </li>
           ))}
         </ul>
@@ -294,7 +294,7 @@ export default function TeamPage() {
                   {teamData.recentGames.map((game) => (
                     <li key={game.gamePk}>
                       <Link
-                        to={`/game/${game.gamePk}`}
+                        to={`/games/${game.gamePk}`}
                         className="team-recent-game"
                       >
                         <span

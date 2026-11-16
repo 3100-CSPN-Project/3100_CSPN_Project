@@ -64,7 +64,7 @@ export default function PlayerListPage() {
       <ul className="player-directory-list">
         {players?.map((player) => (
           <li key={player.playerId}>
-            <Link to={`/player/${player.playerId}`}>
+            <Link to={`/players/${player.playerId}`}>
               {player.fullName}
               {player.primaryPosition && (
                 <span> · {player.primaryPosition}</span>

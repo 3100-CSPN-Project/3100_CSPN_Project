@@ -289,7 +289,7 @@ export default function PlayerPage() {
               <em>
                 (
                 {player.teamId !== null ? (
-                  <Link to={`/team/${player.teamId}`}>{player.teamName}</Link>
+                  <Link to={`/teams/${player.teamId}`}>{player.teamName}</Link>
                 ) : (
                   player.teamName
                 )}
@@ -420,7 +420,7 @@ export default function PlayerPage() {
                     {teammates.map((teammate) => (
                       <Link
                         key={teammate.playerId}
-                        to={`/player/${teammate.playerId}`}
+                        to={`/players/${teammate.playerId}`}
                       >
                         {teammate.fullName}
                         {teammate.primaryPosition

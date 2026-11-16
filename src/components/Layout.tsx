@@ -6,8 +6,8 @@ import logo from '../assets/logo.svg';
 const navItems = [
   // trace: Make the Games tab return to the homepage, like the logo.
   { to: '/', label: 'Games' },
-  { to: '/player', label: 'Players' },
-  { to: '/team', label: 'Teams' },
+  { to: '/players', label: 'Players' },
+  { to: '/teams', label: 'Teams' },
   { to: '/profile', label: 'Profile' },
 ];
 
