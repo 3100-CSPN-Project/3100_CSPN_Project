@@ -115,7 +115,9 @@ export async function getRandomMlbTeammates(
     .limit(1000);
 
   if (statsError) {
-    throw new Error(`Could not read teammates for team ${teamId}: ${statsError.message}`);
+    throw new Error(
+      `Could not read teammates for team ${teamId}: ${statsError.message}`,
+    );
   }
 
   const playerIds = [

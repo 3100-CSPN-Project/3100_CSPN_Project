@@ -41,7 +41,9 @@ function statText(
   key: string,
 ): string {
   const value = stats[key];
-  return value === null || value === undefined || value === '' ? '-' : `${value}`;
+  return value === null || value === undefined || value === ''
+    ? '-'
+    : `${value}`;
 }
 
 function battingPlayers(players: MlbGamePlayerStats[]) {
@@ -200,10 +202,7 @@ export default function GameBoxScore({
     (boxScore.players.length > 0 || boxScore.teams.length > 0);
   const statusText =
     game.status_abstract === 'In Progress'
-      ? [
-          game.linescore.inningState,
-          game.linescore.currentInningOrdinal,
-        ]
+      ? [game.linescore.inningState, game.linescore.currentInningOrdinal]
           .filter(Boolean)
           .join(' ') || game.status_abstract
       : game.status_abstract;

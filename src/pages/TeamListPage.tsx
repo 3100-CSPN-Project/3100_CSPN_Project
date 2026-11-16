@@ -118,13 +118,17 @@ export default function TeamListPage() {
                       return (
                         secondPercentage - firstPercentage ||
                         (secondRecord?.wins ?? 0) - (firstRecord?.wins ?? 0) ||
-                        (firstRecord?.losses ?? 0) - (secondRecord?.losses ?? 0) ||
+                        (firstRecord?.losses ?? 0) -
+                          (secondRecord?.losses ?? 0) ||
                         first.name.localeCompare(second.name)
                       );
                     });
 
                   return (
-                    <section className="team-division" key={division.divisionId}>
+                    <section
+                      className="team-division"
+                      key={division.divisionId}
+                    >
                       <h3>{division.label}</h3>
                       {divisionTeams.length > 0 ? (
                         <TeamCards teams={divisionTeams} />

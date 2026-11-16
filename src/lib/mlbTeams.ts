@@ -146,7 +146,9 @@ async function fetchLatestTeamSeason(teamId: number): Promise<number | null> {
     .maybeSingle();
 
   if (error) {
-    throw new Error(`Could not find a completed season for team ${teamId}: ${error.message}`);
+    throw new Error(
+      `Could not find a completed season for team ${teamId}: ${error.message}`,
+    );
   }
 
   return data === null ? null : Number(data.season);
@@ -169,7 +171,9 @@ async function fetchRegularSeasonGames(season: number): Promise<TeamGameRow[]> {
       .range(start, start + PAGE_SIZE - 1);
 
     if (error) {
-      throw new Error(`Could not read ${season} MLB standings: ${error.message}`);
+      throw new Error(
+        `Could not read ${season} MLB standings: ${error.message}`,
+      );
     }
 
     const page = (data ?? []) as unknown as TeamGameRow[];
@@ -194,7 +198,9 @@ export async function getMlbTeamSeasonRecords(): Promise<{
     .maybeSingle();
 
   if (seasonError) {
-    throw new Error(`Could not find the latest MLB season: ${seasonError.message}`);
+    throw new Error(
+      `Could not find the latest MLB season: ${seasonError.message}`,
+    );
   }
   if (latestGame === null) return { season: null, records: new Map() };
 
@@ -233,7 +239,9 @@ async function fetchRecentTeamGames(
     .limit(4);
 
   if (error) {
-    throw new Error(`Could not read recent games for team ${teamId}: ${error.message}`);
+    throw new Error(
+      `Could not read recent games for team ${teamId}: ${error.message}`,
+    );
   }
 
   return (data ?? []) as unknown as TeamGameRow[];
@@ -261,7 +269,9 @@ async function fetchTeamPlayerGames(
       .range(start, start + PAGE_SIZE - 1);
 
     if (error) {
-      throw new Error(`Could not read the ${season} roster for team ${teamId}: ${error.message}`);
+      throw new Error(
+        `Could not read the ${season} roster for team ${teamId}: ${error.message}`,
+      );
     }
 
     const page = (data ?? []) as unknown as TeamPlayerGameRow[];
@@ -313,8 +323,16 @@ function standingFor(
       : candidate.league_id === team.league_id,
   );
   const sortedTeams = [...divisionTeams].sort((first, second) => {
-    const firstRecord = records.get(first.team_id) ?? { wins: 0, losses: 0, ties: 0 };
-    const secondRecord = records.get(second.team_id) ?? { wins: 0, losses: 0, ties: 0 };
+    const firstRecord = records.get(first.team_id) ?? {
+      wins: 0,
+      losses: 0,
+      ties: 0,
+    };
+    const secondRecord = records.get(second.team_id) ?? {
+      wins: 0,
+      losses: 0,
+      ties: 0,
+    };
     const firstPercentage =
       firstRecord.wins / Math.max(1, firstRecord.wins + firstRecord.losses);
     const secondPercentage =
@@ -326,7 +344,11 @@ function standingFor(
       first.name.localeCompare(second.name)
     );
   });
-  const rank = Math.max(0, sortedTeams.findIndex((candidate) => candidate.team_id === team.team_id)) + 1;
+  const rank =
+    Math.max(
+      0,
+      sortedTeams.findIndex((candidate) => candidate.team_id === team.team_id),
+    ) + 1;
 
   return `${ordinal(rank)} in ${divisionName(team)}`;
 }
@@ -343,12 +365,15 @@ function buildTeamPlayers(
   for (const row of sourceRows) {
     const playerId = Number(row.player_id);
     const position =
-      row.position_abbreviation?.trim() || row.player.primary_position?.trim() || '—';
+      row.position_abbreviation?.trim() ||
+      row.player.primary_position?.trim() ||
+      '—';
     const current = latestPositionByPlayer.get(playerId);
     const isLater =
       !current ||
       row.game.official_date > current.date ||
-      (row.game.official_date === current.date && Number(row.game_pk) > current.gamePk);
+      (row.game.official_date === current.date &&
+        Number(row.game_pk) > current.gamePk);
     if (isLater) {
       latestPositionByPlayer.set(playerId, {
         position,
@@ -360,11 +385,14 @@ function buildTeamPlayers(
 
   const statsByPlayer = new Map<number, PlayerStatSplitRow>();
   for (const stats of buildPlayerStatSplitRows(sourceRows, season)) {
-    if (stats.split_type === 'season') statsByPlayer.set(stats.player_id, stats);
+    if (stats.split_type === 'season')
+      statsByPlayer.set(stats.player_id, stats);
   }
 
   const namesByPlayer = new Map(
-    sourceRows.map((row) => [Number(row.player_id), row.player.full_name] as const),
+    sourceRows.map(
+      (row) => [Number(row.player_id), row.player.full_name] as const,
+    ),
   );
   const positionPlayers: MlbTeamPlayer[] = [];
   const pitchers: MlbTeamPlayer[] = [];
@@ -379,11 +407,24 @@ function buildTeamPlayers(
       stats,
     };
 
-    (isPitcher(latest.position, stats) ? pitchers : positionPlayers).push(player);
+    (isPitcher(latest.position, stats) ? pitchers : positionPlayers).push(
+      player,
+    );
   }
 
   const positionOrder = [
-    'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', 'OF', 'DH', 'UT', '—',
+    'C',
+    '1B',
+    '2B',
+    '3B',
+    'SS',
+    'LF',
+    'CF',
+    'RF',
+    'OF',
+    'DH',
+    'UT',
+    '—',
   ];
   positionPlayers.sort((first, second) => {
     const firstPosition = positionOrder.indexOf(first.position.toUpperCase());
@@ -396,7 +437,9 @@ function buildTeamPlayers(
   });
   pitchers.sort((first, second) => {
     const starterOrder = (player: MlbTeamPlayer) =>
-      player.stats.games_started !== null && player.stats.games_started > 0 ? 0 : 1;
+      player.stats.games_started !== null && player.stats.games_started > 0
+        ? 0
+        : 1;
     return (
       starterOrder(first) - starterOrder(second) ||
       (second.stats.games_started ?? 0) - (first.stats.games_started ?? 0) ||
@@ -455,7 +498,8 @@ export async function getMlbTeamPageData(
   if (teamData === null) return null;
 
   const team = teamData as unknown as TeamRow;
-  const season = (await fetchLatestTeamSeason(teamId)) ?? new Date().getUTCFullYear();
+  const season =
+    (await fetchLatestTeamSeason(teamId)) ?? new Date().getUTCFullYear();
 
   const [teamRows, regularSeasonGames, recentGames, teamPlayerGames] =
     await Promise.all([
@@ -464,7 +508,8 @@ export async function getMlbTeamPageData(
         .select(TEAM_SELECT)
         .order('name')
         .then(({ data, error }) => {
-          if (error) throw new Error(`Could not read MLB teams: ${error.message}`);
+          if (error)
+            throw new Error(`Could not read MLB teams: ${error.message}`);
           return (data ?? []) as unknown as TeamRow[];
         }),
       fetchRegularSeasonGames(season),
@@ -474,8 +519,15 @@ export async function getMlbTeamPageData(
 
   const records = calculateRecords(teamRows, regularSeasonGames);
   const teamRecord = records.get(teamId) ?? { wins: 0, losses: 0, ties: 0 };
-  const teamGames = toRecentGames(recentGames, teamId, new Map(teamRows.map((row) => [row.team_id, row])));
-  const { positionPlayers, pitchers } = buildTeamPlayers(teamPlayerGames, season);
+  const teamGames = toRecentGames(
+    recentGames,
+    teamId,
+    new Map(teamRows.map((row) => [row.team_id, row])),
+  );
+  const { positionPlayers, pitchers } = buildTeamPlayers(
+    teamPlayerGames,
+    season,
+  );
 
   return {
     team: {
@@ -492,4 +544,3 @@ export async function getMlbTeamPageData(
     recentGames: teamGames,
   };
 }
-

@@ -101,7 +101,9 @@ function getLeader(
     const difference = metric.lowerIsBetter
       ? first.value - second.value
       : second.value - first.value;
-    return difference || first.player.fullName.localeCompare(second.player.fullName);
+    return (
+      difference || first.player.fullName.localeCompare(second.player.fullName)
+    );
   });
 
   return eligiblePlayers[0] ?? null;
@@ -117,7 +119,10 @@ function LeaderGroup({
   players: MlbTeamPlayer[];
 }) {
   return (
-    <section className="team-panel team-leader-panel" aria-label={`${title} leaders`}>
+    <section
+      className="team-panel team-leader-panel"
+      aria-label={`${title} leaders`}
+    >
       <h2>{title} leaders</h2>
       <div className="team-leader-grid">
         {metrics.map((metric) => {
@@ -227,7 +232,10 @@ export default function TeamPage() {
               <span className="team-record-caption">Regular season record</span>
             </div>
           </div>
-          <div className="team-record-summary" aria-label="Season record and standing">
+          <div
+            className="team-record-summary"
+            aria-label="Season record and standing"
+          >
             <div>
               <span>Record</span>
               <strong>{recordLabel(teamData)}</strong>
@@ -246,9 +254,15 @@ export default function TeamPage() {
                 <p>Roster</p>
                 <h2>Depth chart</h2>
               </div>
-              <span>{teamData.positionPlayers.length + teamData.pitchers.length} players</span>
+              <span>
+                {teamData.positionPlayers.length + teamData.pitchers.length}{' '}
+                players
+              </span>
             </div>
-            <DepthChart title="Position players" players={teamData.positionPlayers} />
+            <DepthChart
+              title="Position players"
+              players={teamData.positionPlayers}
+            />
             <DepthChart title="Pitchers" players={teamData.pitchers} />
           </div>
 
@@ -279,12 +293,19 @@ export default function TeamPage() {
                 <ul className="team-recent-list">
                   {teamData.recentGames.map((game) => (
                     <li key={game.gamePk}>
-                      <Link to={`/game/${game.gamePk}`} className="team-recent-game">
-                        <span className={`team-result team-result-${game.result.toLowerCase()}`}>
+                      <Link
+                        to={`/game/${game.gamePk}`}
+                        className="team-recent-game"
+                      >
+                        <span
+                          className={`team-result team-result-${game.result.toLowerCase()}`}
+                        >
                           {game.result}
                         </span>
                         <span className="team-game-opponent">
-                          <strong>{game.isHome ? 'vs.' : '@'} {game.opponent}</strong>
+                          <strong>
+                            {game.isHome ? 'vs.' : '@'} {game.opponent}
+                          </strong>
                           <small>{formatDate(game.date)}</small>
                         </span>
                         <strong className="team-game-score">

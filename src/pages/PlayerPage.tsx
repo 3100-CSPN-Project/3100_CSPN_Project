@@ -217,9 +217,7 @@ export default function PlayerPage() {
   const splits = profileStats?.splits ?? [];
   const gameLog = profileStats?.gameLog ?? [];
   const visibleGameLog =
-    gameLogLimit === 'all'
-      ? gameLog
-      : gameLog.slice(0, Number(gameLogLimit));
+    gameLogLimit === 'all' ? gameLog : gameLog.slice(0, Number(gameLogLimit));
   const pitcher = isPitcher(player.primaryPosition);
   const position = player.primaryPosition?.trim().toUpperCase();
   const reliefPitcher =
@@ -289,18 +287,18 @@ export default function PlayerPage() {
             {player.fullName}{' '}
             {player.teamName && (
               <em>
-                ({player.teamId !== null ? (
+                (
+                {player.teamId !== null ? (
                   <Link to={`/team/${player.teamId}`}>{player.teamName}</Link>
                 ) : (
                   player.teamName
-                )})
+                )}
+                )
               </em>
             )}
           </h1>
           <p>{player.primaryPosition ?? 'Position unavailable'}</p>
-          <p>
-            {handDetails || 'Batting and throwing information unavailable'}
-          </p>
+          <p>{handDetails || 'Batting and throwing information unavailable'}</p>
           <button type="button">Follow</button>
         </div>
         <div
@@ -366,7 +364,9 @@ export default function PlayerPage() {
                 </div>
                 <div role="row">
                   <span>Batting average</span>
-                  <span>{formatRate(seasonStats?.batting_average ?? null)}</span>
+                  <span>
+                    {formatRate(seasonStats?.batting_average ?? null)}
+                  </span>
                 </div>
                 <div role="row">
                   <span>Home runs</span>
