@@ -5,6 +5,10 @@
 Prettier for formatting https://prettier.io/docs/configuration
 ESLint for code quality https://eslint.org/docs/latest/use/
 
+## Live app hosted at: 
+
+https://red-coast-0e350f51e.3.azurestaticapps.net
+
 ## Setup
 
 Run npm install, then before pushing,
