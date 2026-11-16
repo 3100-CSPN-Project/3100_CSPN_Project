@@ -24,7 +24,7 @@
     "test:data:compare": "npm run test:data -- --verbose",
     "test:mlb": "node --test scripts/mlb/*.test.mjs",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
+    "lint": "npx eslint . && npx prettier . -c",
     "lint:fix": "eslint . --fix",
     "ingest:mlb": "node --env-file-if-exists=.env scripts/mlb/import-2026.mjs",
     "sync:mlb-images": "node --env-file-if-exists=.env scripts/mlb/sync-images.mjs",
