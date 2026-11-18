@@ -21,7 +21,7 @@ export function formatUpcomingGames(
   if (upcomingGames.length > 0) {
     const upcomingGamesRender: JSX.Element[] = upcomingGames.map((game) => (
       <GameCard
-        gameId={game.game_pk}
+        game_id={game.game_pk}
         status={game.status_abstract}
         home_team={game.home_team.team_name}
         time={`${game.official_date}`}
@@ -43,7 +43,7 @@ export function formatLiveGames(liveGames: LiveGamePreviews): JSX.Element {
   if (liveGames.length > 0) {
     const liveGamesRender: JSX.Element[] = liveGames.map((game) => (
       <GameCard
-        gameId={game.game_pk}
+        game_id={game.game_pk}
         status={game.status_abstract}
         home_team={game.home_team.team_name}
         score={`${game.home_score} - ${game.away_score}`}
@@ -66,7 +66,7 @@ export function formatPastGames(pastGames: PastGamePreviews): JSX.Element {
   if (pastGames.length > 0) {
     const pastGamesRender: JSX.Element[] = pastGames.map((game) => (
       <GameCard
-        gameId={game.game_pk}
+        game_id={game.game_pk}
         status={game.status_abstract}
         home_team={game.home_team.team_name}
         score={`${game.home_score} - ${game.away_score}`}
