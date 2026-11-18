@@ -16,6 +16,7 @@ export default {
       testEnvironment: 'jest-environment-jsdom',
       testMatch: ['<rootDir>/src/tests/dom/**/*.test.tsx'],
       setupFiles: ['<rootDir>/jest.polyfills.js'],
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     },
   ],
 };

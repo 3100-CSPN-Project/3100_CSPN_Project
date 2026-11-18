@@ -1,6 +1,5 @@
 import { test, beforeEach, afterEach, expect } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import GameCard from '../../../src/components/GameCard';
 import { MemoryRouter } from 'react-router-dom';
 
